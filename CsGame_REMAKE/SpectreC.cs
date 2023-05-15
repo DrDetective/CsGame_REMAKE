@@ -5,23 +5,18 @@ using System.Text;
 using System.Threading.Tasks;
 using Spectre;
 using Spectre.Console;
+using CsGame_REMAKE;
 
 namespace CsGame_REMAKE
 {
-    internal class Spectre
+    internal class SpectreC
     {
-        public void playerInventory()
-        {
-        
-        }
         public void itemInfo()
         {
 
 
         }
-        public void menu()
-        {
-        
-        }
     }
 }
+
+//WILL I USE THIS ???????????
