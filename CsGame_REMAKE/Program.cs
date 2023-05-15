@@ -97,13 +97,13 @@ if (desert == "Travel through desert") //TRAVEL
                 switch (ruinsRandom)
                 {
                     case 0: //LIVING HELL SECRET ENDING
-                        if (list.endings.Contains("Living hell"))
+                        if (list.endings.Contains("Living Hell"))
                         {
                             goto normalRuins;
                         }
                         else
                         {
-                            list.endings.Add("Living hell");
+                            list.endings.Add("Living Hell");
                             Console.WriteLine("You found a mysterious portal\n\rAs you go closer you become more curious to know whats in there");
                             Thread.Sleep(2250);
                             Console.Clear();
