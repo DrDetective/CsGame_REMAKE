@@ -6,13 +6,5 @@ List lists = new List();
 Player stats = new Player();
 Helper help = new Helper();
 #endregion ENTRY
-string game_name = @"
- __          __             _                          _______    _      
- \ \        / /            | |                        |__   __|  | |     
-  \ \  /\  / /_ _ _ __   __| | ___ _ __ ___ _ __ ___     | | __ _| | ___ 
-   \ \/  \/ / _` | '_ \ / _` |/ _ \ '__/ _ \ '__/ __|    | |/ _` | |/ _ \
-    \  /\  / (_| | | | | (_| |  __/ | |  __/ |  \__ \    | | (_| | |  __/
-     \/  \/ \__,_|_| |_|\__,_|\___|_|  \___|_|  |___/    |_|\__,_|_|\___|
-                                                                         
-                                                                         
-";
+AnsiConsole.Write(new FigletText(" ").LeftJustified().Color(Color.Red));
+AnsiConsole.Write(new FigletText("Wanderer's Tale").Centered().Color(Color.Red));
