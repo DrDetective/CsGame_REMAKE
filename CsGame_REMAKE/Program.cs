@@ -78,6 +78,7 @@ while (stats.stamina == 0)
 while (stats.progressLvl >= 100)
 {
     stats.lvl++;
+    stats.progressLvl = 0;
 }
 if (desert == "Travel through desert") //TRAVEL
 {
@@ -274,6 +275,7 @@ while (stats.stamina == 0)
 while (stats.progressLvl >= 200)
 {
     stats.lvl++;
+    stats.progressLvl = 0;
 }
 if (ocean == "")
 {
@@ -310,7 +312,7 @@ else if (ocean == "Search near you for resources")
             goto oceanTravel;
     }
 }
-else //INVERNTORY
+else if ("Inventory") //INVERNTORY
 {
     design.inventory();
     goto oceanTravel;
