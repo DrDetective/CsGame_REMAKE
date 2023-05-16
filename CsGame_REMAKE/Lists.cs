@@ -12,6 +12,7 @@ namespace CsGame_REMAKE
         public List<string> desert = new List<string>();
         public List<string> secret = new List<string>();
         public List<string> combat = new List<string>();
+        public List<string> combatOcean = new List<string>();
         public List<string> endings = new List<string>();
         public Lists()
         {
@@ -37,6 +38,9 @@ namespace CsGame_REMAKE
 
             combat.Add("Snake");
             combat.Add("Scorpion");
+
+            combatOcean.Add("Piranna");
+            combatOcean.Add("Shark");
         }
 
     }
