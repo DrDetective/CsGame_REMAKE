@@ -1,16 +1,15 @@
 ﻿global using CsGame_REMAKE;
 using Spectre.Console;
 using System;
-
 Lists list = new Lists();
 Player stats = new Player();
 Helper help = new Helper();
-SpectreC design = new SpectreC();
-
+#region
 var colorRed = new Style().Foreground(Color.Red);
 var colorYellow = new Style().Foreground(Color.Yellow);
 var colorOcean = new Style().Foreground(Color.DodgerBlue2);
 var colorInv = new Style().Foreground(Color.White);
+#endregion COLORS
 while (true)
 {
 menu:
@@ -46,7 +45,7 @@ menu:
     {
         return;
     }
-}
+} //START MENU
 stats.stamina = 50;
 stats.playerAttack = 2;
 Console.WriteLine("Enter your name wanderer");
@@ -147,13 +146,13 @@ ruinsTravel:
             stats.enemyAttack = 3;
             stats.enemyHP = 20;
             int Run = help.generator.Next(0, 100);
-            //ADD LVL FUNCTION TO ENEMY AND PLAYER (RANDOM LVL ENEMY) ??????????
+            Console.WriteLine($"{stats.enemyAttack}\n{stats.enemyHP}");
             Console.WriteLine($"While traveling you found dead rat and you see a {list.combat[combatRng]} coming towards you");
             Thread.Sleep(2000);
             Console.Clear();
             while (stats.playerHP > 0 && stats.enemyHP > 0)
             {
-                combat:
+            combat:
                 Console.WriteLine($"{stats.playerName} HP: {stats.playerHP}\n{list.combat[combatRng]} HP: {stats.enemyHP}");
                 var combatDesert = AnsiConsole.Prompt(new SelectionPrompt<string>().PageSize(3).HighlightStyle(colorYellow).AddChoices(new[] { "Attack", "Run" }));
                 switch (combatDesert)
@@ -169,7 +168,7 @@ ruinsTravel:
                         {
                             Console.WriteLine("You ran away");
                         }
-                        else 
+                        else
                         {
                             goto combat;
                         }
@@ -239,6 +238,7 @@ else if (desert == "Search near you for resources") //SEARCH NEAR YOU
             }
             else
             {
+                list.codes.Add(list.secret[secretIndex]);
                 Console.WriteLine($"You found a piece of paper\nIt says: {list.secret[secretIndex]}");
                 Thread.Sleep(1750);
                 Console.Clear();
@@ -251,11 +251,6 @@ else if (desert == "Search near you for resources") //SEARCH NEAR YOU
             Console.Clear();
             goto travel;
     }
-}
-else //INVERNTORY
-{
-    design.inventory();
-    goto travel;
 }
 #endregion DESERT
 
@@ -282,7 +277,7 @@ while (stats.progressLvl >= 200) //EXP TO 200 TO ADD NEW LEVEL
     stats.lvl++;
     stats.progressLvl -= 200;
 }
-if (ocean == "Travel near ocean") //TRAVEL ??
+if (ocean == "Travel near ocean") //TRAVEL
 {
     int combatOcean = help.generator.Next(0,list.combatOcean.Count());
     int Index = help.generator.Next(0, 2);
@@ -303,10 +298,9 @@ if (ocean == "Travel near ocean") //TRAVEL ??
             break;
         
         case 4: //OCEAN COMBAT
-            stats.enemyAttack = 8 * (enemyLvlRandom/10);
-            stats.enemyHP = 35 *(enemyLvlRandom / 10);
-            int Run = help.generator.Next(0, 100);
-            //ADD LVL FUNCTION TO ENEMY AND PLAYER (RANDOM LVL ENEMY) ??????????
+            stats.enemyAttack = 8;
+            stats.enemyHP = 35;
+            int Run = help.generator.Next(0, 200);
             Console.WriteLine($"While traveling you see a {list.combatOcean[combatOcean]} coming towards you");
             Thread.Sleep(2000);
             Console.Clear();
@@ -324,7 +318,7 @@ if (ocean == "Travel near ocean") //TRAVEL ??
                         Console.Clear();
                         break;
                     case "Run":
-                        if (Run <= 10)
+                        if (Run <= 30)
                         {
                             Console.WriteLine("You ran away");
                         }
@@ -395,6 +389,7 @@ else if (ocean == "Inventory" || desert  == "Inventory") //INVENTORY
     var tableInv = new Table();
     tableInv.AddColumn("Name");
     tableInv.AddColumn($"{stats.playerName}");
+    tableInv.AddColumn("Pockets");
     tableInv.AddRow("LVL", $"{stats.lvl}");
     tableInv.AddRow("Progress", $"{stats.progressLvl}");
     tableInv.AddRow("HP", $"{stats.playerHP}");
@@ -404,7 +399,6 @@ else if (ocean == "Inventory" || desert  == "Inventory") //INVENTORY
     tableInv.AddRow("Stamina", $"{stats.stamina}");
     tableInv.AddRow("Armor", $"{stats.armor}");
     tableInv.AddRow("Damage", $"{stats.playerAttack}");
-    tableInv.AddColumn("");
     AnsiConsole.Write(tableInv);
     var inventory = AnsiConsole.Prompt(new SelectionPrompt<string>().PageSize(3).HighlightStyle(colorInv).AddChoices(new[] { "Crafting", "Cooking", "Go back" }));
     if (inventory == "Crafting")
@@ -419,10 +413,12 @@ else if (ocean == "Inventory" || desert  == "Inventory") //INVENTORY
     {
         if (ocean == "Inventory")
         {
+            Console.Clear();
             goto oceanTravel;
         }
         else
         {
+            Console.Clear();
             goto travel;
         }
     }
@@ -432,10 +428,10 @@ else if (ocean == "Inventory" || desert  == "Inventory") //INVENTORY
 
 
 
-
-
-
-
+//ADD 2-3H
+//FIX INVENTORY
+//ADD RANDOM CHANCE OF ENCOUNTRE? KRAKEN
+//ADD LVL FUNCTION TO ENEMY AND PLAYER (RANDOM LVL ENEMY) ??????????
 //ADD COOKING
 //ADD CRAFTING
 //ITEM DESIGN EITHER WITH PANEL OR TABLE

@@ -14,6 +14,8 @@ namespace CsGame_REMAKE
         public List<string> combat = new List<string>();
         public List<string> combatOcean = new List<string>();
         public List<string> endings = new List<string>();
+        public List<string> codes = new List<string>();
+        public List<string> pockets = new List<string>();
         public Lists()
         {
             pyramid.Add("Hay");
