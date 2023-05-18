@@ -2,15 +2,15 @@
 using Spectre.Console;
 using System;
 
-
-
-#region
 Lists list = new Lists();
 Player stats = new Player();
 Helper help = new Helper();
 SpectreC design = new SpectreC();
-#endregion ENTRY
+
 var colorRed = new Style().Foreground(Color.Red);
+var colorYellow = new Style().Foreground(Color.Yellow);
+var colorOcean = new Style().Foreground(Color.DodgerBlue2);
+var colorInv = new Style().Foreground(Color.White);
 while (true)
 {
 menu:
@@ -65,11 +65,11 @@ if (stats.playerName == "test")
     stats.playerAttack = 9999;
 } //TESTING NAME
 #region
-AnsiConsole.Write(new FigletText("Desert").Centered());
+AnsiConsole.Write(new FigletText("Desert").Color(Color.Yellow).Centered());
 Thread.Sleep(1700);
 Console.Clear();
 travel:
-var desert = AnsiConsole.Prompt(new SelectionPrompt<string>().PageSize(3).HighlightStyle(colorRed).AddChoices(new[] { "Travel through desert", "Search near you for resources", "Inventory" }));
+var desert = AnsiConsole.Prompt(new SelectionPrompt<string>().PageSize(3).HighlightStyle(colorYellow).AddChoices(new[] { "Travel through desert", "Search near you for resources", "Inventory" }));
 while (stats.stamina == 0)
 {
     Console.WriteLine("You passed out, because you were out of stamina");
@@ -81,7 +81,7 @@ while (stats.stamina == 0)
 while (stats.progressLvl >= 100)
 {
     stats.lvl++;
-    stats.progressLvl = 0;
+    stats.progressLvl -= 100;
 }
 if (desert == "Travel through desert") //TRAVEL
 {
@@ -102,9 +102,10 @@ ruinsTravel:
             goto travel;
         case 1: //FOUND OLD RUINS
             Console.WriteLine($"You found old ruins\nRemaining stamina: {stats.stamina}");
-            var ruins = AnsiConsole.Prompt(new SelectionPrompt<string>().PageSize(3).HighlightStyle(colorRed).AddChoices(new[] { "Explore", "Travel more" }));
+            var ruins = AnsiConsole.Prompt(new SelectionPrompt<string>().PageSize(3).HighlightStyle(colorYellow).AddChoices(new[] { "Explore", "Travel more" }));
             if (ruins == "Explore")
             {
+                Console.Clear();
                 switch (ruinsRandom)
                 {
                     case 0: //LIVING HELL SECRET ENDING
@@ -154,7 +155,7 @@ ruinsTravel:
             {
                 combat:
                 Console.WriteLine($"{stats.playerName} HP: {stats.playerHP}\n{list.combat[combatRng]} HP: {stats.enemyHP}");
-                var combatDesert = AnsiConsole.Prompt(new SelectionPrompt<string>().PageSize(3).HighlightStyle(colorRed).AddChoices(new[] { "Attack", "Run" }));
+                var combatDesert = AnsiConsole.Prompt(new SelectionPrompt<string>().PageSize(3).HighlightStyle(colorYellow).AddChoices(new[] { "Attack", "Run" }));
                 switch (combatDesert)
                 {
                     case "Attack":
@@ -207,7 +208,7 @@ ruinsTravel:
             Console.WriteLine($"While traveling you found a pyramid\nRemaining stamina: {stats.stamina}");
             Thread.Sleep(1500);
             Console.Clear();
-            var pyramid = AnsiConsole.Prompt(new SelectionPrompt<string>().PageSize(3).HighlightStyle(colorRed).AddChoices(new[] { "Explore", "Travel more" }));
+            var pyramid = AnsiConsole.Prompt(new SelectionPrompt<string>().PageSize(3).HighlightStyle(colorYellow).AddChoices(new[] { "Explore", "Travel more" }));
             if (pyramid == "Explore")
             {
                 Console.WriteLine($"You found {list.pyramid[pyramidIndex]}");
@@ -257,17 +258,18 @@ else //INVERNTORY
     goto travel;
 }
 #endregion DESERT
+
 #region
 stats.stamina = 100;
-AnsiConsole.Write(new FigletText("Ocean").Centered());
+AnsiConsole.Write(new FigletText("Ocean").Color(Color.DodgerBlue2).Centered());
 Thread.Sleep(1700);
 Console.Clear();
 Console.WriteLine("Your stamina is now 100");
 Thread.Sleep(1500);
 Console.Clear();
 oceanTravel:
-var ocean = AnsiConsole.Prompt(new SelectionPrompt<string>().PageSize(3).HighlightStyle(colorRed).AddChoices(new[] { "", "Search near you for resources", "Inventory" }));
-while (stats.stamina == 0)
+var ocean = AnsiConsole.Prompt(new SelectionPrompt<string>().PageSize(3).HighlightStyle(colorOcean).AddChoices(new[] { "Travel near ocean", "Search near you for resources", "Inventory" }));
+while (stats.stamina == 0) //OUT OF STAMINA
 {
     Console.WriteLine("You passed out, because you were out of stamina");
     Thread.Sleep(2000);
@@ -275,17 +277,89 @@ while (stats.stamina == 0)
     stats.stamina += 100;
     goto oceanTravel;
 }
-while (stats.progressLvl >= 200)
+while (stats.progressLvl >= 200) //EXP TO 200 TO ADD NEW LEVEL
 {
     stats.lvl++;
-    stats.progressLvl = 0;
+    stats.progressLvl -= 200;
 }
-if (ocean == "")
+if (ocean == "Travel near ocean") //TRAVEL ??
 {
     int combatOcean = help.generator.Next(0,list.combatOcean.Count());
     int Index = help.generator.Next(0, 2);
+    int oceanTravel = help.generator.Next(0,4);
+    int enemyLvlRandom = help.generator.Next(0,20);
+    switch (oceanTravel)
+    {
+        case 1: //MAKE A BOAT STORY CONTINUE
+            goto oceanTravel;
+            break;
+
+        case 2: //
+            goto oceanTravel;
+            break;
+        
+        case 3: //WRECKED BOAT
+            goto oceanTravel;
+            break;
+        
+        case 4: //OCEAN COMBAT
+            stats.enemyAttack = 8 * (enemyLvlRandom/10);
+            stats.enemyHP = 35 *(enemyLvlRandom / 10);
+            int Run = help.generator.Next(0, 100);
+            //ADD LVL FUNCTION TO ENEMY AND PLAYER (RANDOM LVL ENEMY) ??????????
+            Console.WriteLine($"While traveling you see a {list.combatOcean[combatOcean]} coming towards you");
+            Thread.Sleep(2000);
+            Console.Clear();
+            while (stats.playerHP > 0 && stats.enemyHP > 0)
+            {
+            combat:
+                Console.WriteLine($"{stats.playerName} HP: {stats.playerHP}\n{list.combatOcean[combatOcean]} HP: {stats.enemyHP}");
+                var oceanCombat = AnsiConsole.Prompt(new SelectionPrompt<string>().PageSize(3).HighlightStyle(colorOcean).AddChoices(new[] { "Attack", "Run" }));
+                switch (oceanCombat)
+                {
+                    case "Attack":
+                        stats.enemyHP -= stats.playerAttack;
+                        Console.WriteLine($"You dealt {stats.playerAttack} damage to {list.combatOcean[combatOcean]}");
+                        Thread.Sleep(1500);
+                        Console.Clear();
+                        break;
+                    case "Run":
+                        if (Run <= 10)
+                        {
+                            Console.WriteLine("You ran away");
+                        }
+                        else
+                        {
+                            goto combat;
+                        }
+                        break;
+                }
+                if (stats.enemyHP > 0)
+                {
+                    stats.playerHP -= stats.enemyAttack;
+                    Console.WriteLine($"{list.combatOcean[combatOcean]} dealt {stats.enemyAttack} damage");
+                    Thread.Sleep(1500);
+                    Console.Clear();
+                }
+            }
+            if (stats.playerHP > 0)
+            {
+                stats.progressLvl += Run;
+                Console.WriteLine("You won");
+                Thread.Sleep(1500);
+                Console.Clear();
+                goto oceanTravel;
+            }
+            else
+            {
+                Console.WriteLine("You lost");
+                Thread.Sleep(1500);
+                Console.Clear();
+                return;
+            }
+    }
 }
-else if (ocean == "Search near you for resources")
+else if (ocean == "Search near you for resources") //SEARCH NEAR YOU
 {
     stats.stamina -= 10;
     stats.hunger -= 5;
@@ -315,12 +389,44 @@ else if (ocean == "Search near you for resources")
             goto oceanTravel;
     }
 }
-else if ("Inventory") //INVERNTORY
-{
-    design.inventory();
-    goto oceanTravel;
-}
 #endregion OCEAN
+else if (ocean == "Inventory" || desert  == "Inventory") //INVENTORY
+{
+    var tableInv = new Table();
+    tableInv.AddColumn("Name");
+    tableInv.AddColumn($"{stats.playerName}");
+    tableInv.AddRow("LVL", $"{stats.lvl}");
+    tableInv.AddRow("Progress", $"{stats.progressLvl}");
+    tableInv.AddRow("HP", $"{stats.playerHP}");
+    tableInv.AddRow("MP", $"{stats.mana}");
+    tableInv.AddRow("Hunger", $"{stats.hunger}");
+    tableInv.AddRow("Thirst", $"{stats.thirst}");
+    tableInv.AddRow("Stamina", $"{stats.stamina}");
+    tableInv.AddRow("Armor", $"{stats.armor}");
+    tableInv.AddRow("Damage", $"{stats.playerAttack}");
+    tableInv.AddColumn("");
+    AnsiConsole.Write(tableInv);
+    var inventory = AnsiConsole.Prompt(new SelectionPrompt<string>().PageSize(3).HighlightStyle(colorInv).AddChoices(new[] { "Crafting", "Cooking", "Go back" }));
+    if (inventory == "Crafting")
+    {
+
+    }
+    else if (inventory == "Cooking")
+    {
+
+    }
+    else
+    {
+        if (ocean == "Inventory")
+        {
+            goto oceanTravel;
+        }
+        else
+        {
+            goto travel;
+        }
+    }
+}
 
 
 
@@ -330,8 +436,8 @@ else if ("Inventory") //INVERNTORY
 
 
 
-
-//FIX GOTO FROM DESERT TO OCEAN
+//ADD COOKING
+//ADD CRAFTING
 //ITEM DESIGN EITHER WITH PANEL OR TABLE
 //MAYBE ADD TIMER FROM VISUAL TIME SPENT PLUGIN
 //https://www.geeksforgeeks.org/console-setwindowsize-method-in-c-sharp/

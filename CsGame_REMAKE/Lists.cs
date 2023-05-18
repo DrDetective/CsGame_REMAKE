@@ -42,6 +42,5 @@ namespace CsGame_REMAKE
             combatOcean.Add("Piranna");
             combatOcean.Add("Shark");
         }
-
     }
 }
