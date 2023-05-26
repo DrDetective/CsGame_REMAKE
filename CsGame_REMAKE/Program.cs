@@ -1,6 +1,7 @@
 ﻿global using CsGame_REMAKE;
 using Spectre.Console;
-using System;
+using System.Diagnostics;
+
 Lists list = new Lists();
 Player stats = new Player();
 Helper help = new Helper();
@@ -14,16 +15,15 @@ while (true)
 {
 menu:
     AnsiConsole.Write(new FigletText("Wanderer's Tale").Centered().Color(Color.Red));
-    var menu = AnsiConsole.Prompt(new SelectionPrompt<string>().PageSize(3).HighlightStyle(colorRed).AddChoices(new[] { "Start Game", "Credits", "Exit" }));
+    var menu = AnsiConsole.Prompt(new SelectionPrompt<string>().PageSize(4).HighlightStyle(colorRed).AddChoices(new[] { "Start Game", "Credits","Report a bug", "Exit" }));
     if (menu == "Start Game")
     {
         Console.Clear();
         break;
-    }
+    } //START
     if (menu == "Credits")
     {
-        AnsiConsole.Write(new Rows(new Text("Total time of code : 4h")));
-        var credits = AnsiConsole.Prompt(new SelectionPrompt<string>().PageSize(3).HighlightStyle(colorRed).AddChoices(new[] { "Endings", "Go back to title screen" }));
+        var credits = AnsiConsole.Prompt(new SelectionPrompt<string>().PageSize(3).HighlightStyle(colorRed).AddChoices(new[] { "Endings", "Updates", "Go back to title screen" }));
         if (credits == "Endings")
         {
             list.endings.Add("test");
@@ -34,22 +34,43 @@ menu:
             Thread.Sleep(2500);
             Console.Clear();
             goto menu;
-        }
+        } //ENDINGS
+        if (credits == "Updates")
+        {
+            var psi = new ProcessStartInfo
+            {
+                FileName = "https://github.com/DrDetective/CsGame_REMAKE/commits/master",
+                UseShellExecute = true,
+            };
+            Process.Start(psi);
+            Console.Clear();
+            goto menu;
+        } //COMMITS
         else
         {
             Console.Clear();
             goto menu;
-        }
-    }
+        } //RETURN
+    } //CREDITS
+    if (menu == "Report a bug")
+    {
+        var psi = new ProcessStartInfo
+        {
+            FileName = "https://www.github.com/DrDetective/CsGame_REMAKE/issues/new",
+            UseShellExecute = true,
+        };
+        Process.Start(psi);
+        Console.Clear();
+    } //BUGS
     else
     {
         return;
-    }
+    } //EXIT
 } //START MENU
 stats.stamina = 50;
 stats.playerAttack = 2;
 Console.WriteLine("Enter your name wanderer");
-stats.playerName = Console.ReadLine();
+stats.playerName += Console.ReadLine();
 Console.Clear();
 Console.WriteLine($"Welcome {stats.playerName}\nyou found yourself in desert and your goal is to find civilization");
 Thread.Sleep(2250);
@@ -76,13 +97,13 @@ while (stats.stamina == 0)
     Console.Clear();
     stats.stamina += 50;
     goto travel;
-}
+} //OUT OF STAMINA
 while (stats.progressLvl >= 100)
 {
     stats.lvl++;
     stats.progressLvl -= 100;
-}
-if (desert == "Travel through desert") //TRAVEL
+} //NEW LEVEL
+if (desert == "Travel through desert")
 {
 ruinsTravel:
     stats.stamina -= 10;
@@ -111,7 +132,7 @@ ruinsTravel:
                         if (list.endings.Contains("Living Hell"))
                         {
                             goto normalRuins;
-                        }
+                        } //ENDING CHECK
                         else
                         {
                             list.endings.Add("Living Hell");
@@ -128,7 +149,7 @@ ruinsTravel:
                             Thread.Sleep(1500);
                             Console.Clear();
                             goto travel;
-                        }
+                        } //SECRET ENDING
                     case 1: //NORMAL EXPLORE RUINS
                         normalRuins:
                         Console.WriteLine($"You found {list.desert[ruinsItem]}");
@@ -136,11 +157,11 @@ ruinsTravel:
                         Console.Clear();
                         goto travel;
                 }
-            }
+            } //EXPLORE RUINS
             else
             {
                 goto ruinsTravel;
-            }
+            } //RETURN TO TRAVEL MORE
             break;
         case 2: //FIRST COMBAT
             stats.enemyAttack = 3;
@@ -173,15 +194,15 @@ ruinsTravel:
                             goto combat;
                         }
                         break;
-                }
+                } //PLAYER TURN
                 if (stats.enemyHP > 0)
                 {
                     stats.playerHP -= stats.enemyAttack;
                     Console.WriteLine($"{list.combat[combatRng]} dealt {stats.enemyAttack} damage");
                     Thread.Sleep(1500);
                     Console.Clear();
-                }
-            }
+                } //ENEMY TURN
+            } //COMBAT
             if (stats.playerHP > 0)
             {
                 stats.progressLvl += Run;
@@ -189,14 +210,14 @@ ruinsTravel:
                 Thread.Sleep(1500);
                 Console.Clear();
                 goto travel;
-            }
+            } //W
             else
             {
                 Console.WriteLine("You lost");
                 Thread.Sleep(1500);
                 Console.Clear();
                 return;
-            }
+            } //L
         case 3: //PALM TREE CONTINUE
             Console.WriteLine("As You traveled for what felt like years you see a palm tree in distance\nyou feel as if you got your life back and made a run for it\nYou are in a new area");
             Thread.Sleep(1600);
@@ -214,14 +235,14 @@ ruinsTravel:
                 Thread.Sleep(1750);
                 Console.Clear();
                 goto travel;
-            }
+            } //EXPLORE PYRAMIDS
             else
             {
-                goto travel;
-            }
-    }
-}
-else if (desert == "Search near you for resources") //SEARCH NEAR YOU
+                goto ruinsTravel;
+            } //RETURN TO TRAVEL MORE
+    } //TRAVEL OPTIONS
+} //TRAVEL
+else if (desert == "Search near you for resources")
 {
     stats.stamina -= 10;
     stats.hunger -= 5;
@@ -231,11 +252,11 @@ else if (desert == "Search near you for resources") //SEARCH NEAR YOU
     int secretIndex = help.generator.Next(0, list.secret.Count);
     switch (rng)
     {
-        case 0:
+        case 0: //SECRET CODE
             if (list.secret.Contains(list.secret[secretIndex]))
             {
                 goto code;
-            }
+            } //SECRET CODE CHECK
             else
             {
                 list.codes.Add(list.secret[secretIndex]);
@@ -243,15 +264,15 @@ else if (desert == "Search near you for resources") //SEARCH NEAR YOU
                 Thread.Sleep(1750);
                 Console.Clear();
                 goto travel;
-            }
-        case 1:
+            } //SECRET CODE
+        case 1: //FOUND MATERIALS
         code:
             Console.WriteLine($"You searched for few hours and found {list.desert[searchDesert]}\nRemaining stamina {stats.stamina}");
             Thread.Sleep(2000);
             Console.Clear();
             goto travel;
     }
-}
+} //SEARCH NEAR YOU
 #endregion DESERT
 
 #region
@@ -264,21 +285,22 @@ Thread.Sleep(1500);
 Console.Clear();
 oceanTravel:
 var ocean = AnsiConsole.Prompt(new SelectionPrompt<string>().PageSize(3).HighlightStyle(colorOcean).AddChoices(new[] { "Travel near ocean", "Search near you for resources", "Inventory" }));
-while (stats.stamina == 0) //OUT OF STAMINA
+while (stats.stamina == 0)
 {
     Console.WriteLine("You passed out, because you were out of stamina");
     Thread.Sleep(2000);
     Console.Clear();
     stats.stamina += 100;
     goto oceanTravel;
-}
-while (stats.progressLvl >= 200) //EXP TO 200 TO ADD NEW LEVEL
+} //OUT OF STAMINA
+while (stats.progressLvl >= 200)
 {
     stats.lvl++;
     stats.progressLvl -= 200;
-}
-if (ocean == "Travel near ocean") //TRAVEL
+} //EXP TO 200 TO ADD NEW LEVEL
+if (ocean == "Travel near ocean")
 {
+travelMoreOcean:
     int combatOcean = help.generator.Next(0,list.combatOcean.Count());
     int Index = help.generator.Next(0, 2);
     int oceanTravel = help.generator.Next(0,4);
@@ -294,7 +316,7 @@ if (ocean == "Travel near ocean") //TRAVEL
             break;
         
         case 3: //WRECKED BOAT
-            goto oceanTravel;
+            Console.WriteLine($"While traveling near the ocean you saw a wrecked boat\nRemaining stamina: {stats.stamina}");
             break;
         
         case 4: //OCEAN COMBAT
@@ -327,15 +349,15 @@ if (ocean == "Travel near ocean") //TRAVEL
                             goto combat;
                         }
                         break;
-                }
+                } //PLAYER TURN
                 if (stats.enemyHP > 0)
                 {
                     stats.playerHP -= stats.enemyAttack;
                     Console.WriteLine($"{list.combatOcean[combatOcean]} dealt {stats.enemyAttack} damage");
                     Thread.Sleep(1500);
                     Console.Clear();
-                }
-            }
+                } //ENEMY TURN
+            } //OCEAN COMBAT
             if (stats.playerHP > 0)
             {
                 stats.progressLvl += Run;
@@ -343,17 +365,17 @@ if (ocean == "Travel near ocean") //TRAVEL
                 Thread.Sleep(1500);
                 Console.Clear();
                 goto oceanTravel;
-            }
+            } //W
             else
             {
                 Console.WriteLine("You lost");
                 Thread.Sleep(1500);
                 Console.Clear();
                 return;
-            }
-    }
-}
-else if (ocean == "Search near you for resources") //SEARCH NEAR YOU
+            } //L
+    } //OCEAN TRAVEL OPTIONS
+} //OCEAN TRAVEL
+else if (ocean == "Search near you for resources")
 {
     stats.stamina -= 10;
     stats.hunger -= 5;
@@ -363,28 +385,28 @@ else if (ocean == "Search near you for resources") //SEARCH NEAR YOU
     int secretIndex = help.generator.Next(0, list.secret.Count);
     switch (rng)
     {
-        case 0:
+        case 0: //SECRET CODE
             if (list.secret.Contains(list.secret[secretIndex]))
             {
                 goto code;
-            }
+            } //SECRET CODE CHECK
             else
             {
                 Console.WriteLine($"You found a piece of paper\nIt says: {list.secret[secretIndex]}");
                 Thread.Sleep(1750);
                 Console.Clear();
                 goto oceanTravel;
-            }
-        case 1:
-        code:
+            } //SECRET CODE
+        case 1: //FOUND MATERIALS
+        code: 
             Console.WriteLine($"You searched for few hours and found {list.desert[searchDesert]}\nRemaining stamina {stats.stamina}");
             Thread.Sleep(2000);
             Console.Clear();
             goto oceanTravel;
     }
-}
+} //SEARCH NEAR YOU
 #endregion OCEAN
-else if (ocean == "Inventory" || desert  == "Inventory") //INVENTORY
+else if (ocean == "Inventory" || desert  == "Inventory")
 {
     var tableInv = new Table();
     tableInv.AddColumn("Name");
@@ -404,11 +426,11 @@ else if (ocean == "Inventory" || desert  == "Inventory") //INVENTORY
     if (inventory == "Crafting")
     {
 
-    }
+    } //CRAFTING
     else if (inventory == "Cooking")
     {
 
-    }
+    } //COOKING
     else
     {
         if (ocean == "Inventory")
@@ -422,18 +444,16 @@ else if (ocean == "Inventory" || desert  == "Inventory") //INVENTORY
             goto travel;
         }
     }
-}
+} //INVENTORY
 
 
 
 
 
-//ADD 2-3H
 //FIX INVENTORY
-//ADD RANDOM CHANCE OF ENCOUNTRE? KRAKEN
+//ADD RANDOM CHANCE OF ENCOUNTER? KRAKEN
 //ADD LVL FUNCTION TO ENEMY AND PLAYER (RANDOM LVL ENEMY) ??????????
 //ADD COOKING
 //ADD CRAFTING
 //ITEM DESIGN EITHER WITH PANEL OR TABLE
-//MAYBE ADD TIMER FROM VISUAL TIME SPENT PLUGIN
 //https://www.geeksforgeeks.org/console-setwindowsize-method-in-c-sharp/

@@ -8,7 +8,7 @@ namespace CsGame_REMAKE
 {
     internal class Player
     {
-        public string playerName;
+        public string playerName = "";
         public int hunger = 100;
         public int thirst = 100;
         public int playerHP = 100;
