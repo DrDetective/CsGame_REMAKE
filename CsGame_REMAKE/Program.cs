@@ -84,7 +84,7 @@ if (stats.playerName == "test")
     stats.playerHP = 9999;
     stats.playerAttack = 9999;
 } //TESTING NAME
-#region
+#region DESERT
 AnsiConsole.Write(new FigletText("Desert").Color(Color.Yellow).Centered());
 Thread.Sleep(1700);
 Console.Clear();
@@ -167,7 +167,6 @@ ruinsTravel:
             stats.enemyAttack = 3;
             stats.enemyHP = 20;
             int Run = help.generator.Next(0, 100);
-            Console.WriteLine($"{stats.enemyAttack}\n{stats.enemyHP}");
             Console.WriteLine($"While traveling you found dead rat and you see a {list.combat[combatRng]} coming towards you");
             Thread.Sleep(2000);
             Console.Clear();
@@ -273,9 +272,9 @@ else if (desert == "Search near you for resources")
             goto travel;
     }
 } //SEARCH NEAR YOU
-#endregion DESERT
+#endregion
 
-#region
+#region OCEAN
 stats.stamina = 100;
 AnsiConsole.Write(new FigletText("Ocean").Color(Color.DodgerBlue2).Centered());
 Thread.Sleep(1700);
@@ -300,26 +299,27 @@ while (stats.progressLvl >= 200)
 } //EXP TO 200 TO ADD NEW LEVEL
 if (ocean == "Travel near ocean")
 {
-travelMoreOcean:
     int combatOcean = help.generator.Next(0,list.combatOcean.Count());
     int Index = help.generator.Next(0, 2);
-    int oceanTravel = help.generator.Next(0,4);
+    int oceanTravel = help.generator.Next(0,3);
     int enemyLvlRandom = help.generator.Next(0,20);
     switch (oceanTravel)
     {
         case 1: //MAKE A BOAT STORY CONTINUE
-            goto oceanTravel;
-            break;
-
-        case 2: //
-            goto oceanTravel;
-            break;
+            if (list.pockets.Contains("Boat"))
+            {
+                goto oceanTravel;
+            }
+            else
+            {
+                goto oceanTravel;
+            }
         
-        case 3: //WRECKED BOAT
+        case 2: //WRECKED BOAT
             Console.WriteLine($"While traveling near the ocean you saw a wrecked boat\nRemaining stamina: {stats.stamina}");
             break;
         
-        case 4: //OCEAN COMBAT
+        case 3: //OCEAN COMBAT
             stats.enemyAttack = 8;
             stats.enemyHP = 35;
             int Run = help.generator.Next(0, 200);
@@ -405,45 +405,46 @@ else if (ocean == "Search near you for resources")
             goto oceanTravel;
     }
 } //SEARCH NEAR YOU
-#endregion OCEAN
+#endregion
 else if (ocean == "Inventory" || desert  == "Inventory")
 {
-    var tableInv = new Table();
-    tableInv.AddColumn("Name");
-    tableInv.AddColumn($"{stats.playerName}");
-    tableInv.AddColumn("Pockets");
-    tableInv.AddRow("LVL", $"{stats.lvl}");
-    tableInv.AddRow("Progress", $"{stats.progressLvl}");
-    tableInv.AddRow("HP", $"{stats.playerHP}");
-    tableInv.AddRow("MP", $"{stats.mana}");
-    tableInv.AddRow("Hunger", $"{stats.hunger}");
-    tableInv.AddRow("Thirst", $"{stats.thirst}");
-    tableInv.AddRow("Stamina", $"{stats.stamina}");
-    tableInv.AddRow("Armor", $"{stats.armor}");
-    tableInv.AddRow("Damage", $"{stats.playerAttack}");
-    AnsiConsole.Write(tableInv);
-    var inventory = AnsiConsole.Prompt(new SelectionPrompt<string>().PageSize(3).HighlightStyle(colorInv).AddChoices(new[] { "Crafting", "Cooking", "Go back" }));
-    if (inventory == "Crafting")
-    {
+    Console.WriteLine("Coming soon");
+    //var tableInv = new Table();
+    //tableInv.AddColumn("Name");
+    //tableInv.AddColumn($"{stats.playerName}");
+    //tableInv.AddColumn("Pockets");
+    //tableInv.AddRow("LVL", $"{stats.lvl}");
+    //tableInv.AddRow("Progress", $"{stats.progressLvl}");
+    //tableInv.AddRow("HP", $"{stats.playerHP}");
+    //tableInv.AddRow("MP", $"{stats.mana}");
+    //tableInv.AddRow("Hunger", $"{stats.hunger}");
+    //tableInv.AddRow("Thirst", $"{stats.thirst}");
+    //tableInv.AddRow("Stamina", $"{stats.stamina}");
+    //tableInv.AddRow("Armor", $"{stats.armor}");
+    //tableInv.AddRow("Damage", $"{stats.playerAttack}");
+    //AnsiConsole.Write(tableInv);
+    //var inventory = AnsiConsole.Prompt(new SelectionPrompt<string>().PageSize(3).HighlightStyle(colorInv).AddChoices(new[] { "Crafting", "Cooking", "Go back" }));
+    //if (inventory == "Crafting")
+    //{
 
-    } //CRAFTING
-    else if (inventory == "Cooking")
-    {
+    //} //CRAFTING
+    //else if (inventory == "Cooking")
+    //{
 
-    } //COOKING
-    else
-    {
-        if (ocean == "Inventory")
-        {
-            Console.Clear();
-            goto oceanTravel;
-        }
-        else
-        {
-            Console.Clear();
-            goto travel;
-        }
-    }
+    //} //COOKING
+    //else
+    //{
+    //    if (ocean == "Inventory")
+    //    {
+    //        Console.Clear();
+    //        goto oceanTravel;
+    //    }
+    //    else
+    //    {
+    //        Console.Clear();
+    //        goto travel;
+    //    }
+    //}
 } //INVENTORY
 
 
