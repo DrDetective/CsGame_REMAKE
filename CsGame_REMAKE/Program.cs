@@ -272,6 +272,46 @@ else if (desert == "Search near you for resources")
             goto travel;
     }
 } //SEARCH NEAR YOU
+else if (desert == "Inventory")
+{
+    Console.WriteLine("Coming soon");
+    //var tableInv = new Table();
+    //tableInv.AddColumn("Name");
+    //tableInv.AddColumn($"{stats.playerName}");
+    //tableInv.AddColumn("Pockets");
+    //tableInv.AddRow("LVL", $"{stats.lvl}");
+    //tableInv.AddRow("Progress", $"{stats.progressLvl}");
+    //tableInv.AddRow("HP", $"{stats.playerHP}");
+    //tableInv.AddRow("MP", $"{stats.mana}");
+    //tableInv.AddRow("Hunger", $"{stats.hunger}");
+    //tableInv.AddRow("Thirst", $"{stats.thirst}");
+    //tableInv.AddRow("Stamina", $"{stats.stamina}");
+    //tableInv.AddRow("Armor", $"{stats.armor}");
+    //tableInv.AddRow("Damage", $"{stats.playerAttack}");
+    //AnsiConsole.Write(tableInv);
+    //var inventory = AnsiConsole.Prompt(new SelectionPrompt<string>().PageSize(3).HighlightStyle(colorInv).AddChoices(new[] { "Crafting", "Cooking", "Go back" }));
+    //if (inventory == "Crafting")
+    //{
+
+    //} //CRAFTING
+    //else if (inventory == "Cooking")
+    //{
+
+    //} //COOKING
+    //else
+    //{
+    //    if (ocean == "Inventory")
+    //    {
+    //        Console.Clear();
+    //        goto oceanTravel;
+    //    }
+    //    else
+    //    {
+    //        Console.Clear();
+    //        goto travel;
+    //    }
+    //}
+} //INVENTORY
 #endregion
 
 #region OCEAN
