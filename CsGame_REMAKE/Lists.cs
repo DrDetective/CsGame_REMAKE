@@ -16,6 +16,7 @@ namespace CsGame_REMAKE
         public List<string> endings = new List<string>();
         public List<string> codes = new List<string>();
         public List<string> pockets = new List<string>();
+        //public string[] pockets;
         public Lists()
         {
             pyramid.Add("Hay");

@@ -274,7 +274,10 @@ else if (desert == "Search near you for resources")
 } //SEARCH NEAR YOU
 else if (desert == "Inventory")
 {
-    Console.WriteLine("Coming soon");
+    AnsiConsole.Write(new FigletText("Coming soon").Color(Color.Yellow).Centered());
+    Thread.Sleep(1500);
+    Console.Clear();
+    goto travel;
     //var tableInv = new Table();
     //tableInv.AddColumn("Name");
     //tableInv.AddColumn($"{stats.playerName}");
@@ -339,13 +342,18 @@ while (stats.progressLvl >= 200)
 } //EXP TO 200 TO ADD NEW LEVEL
 if (ocean == "Travel near ocean")
 {
+    wrectedTravel:
+    stats.stamina -= 10;
+    stats.hunger -= 5;
+    stats.thirst -= 5;
+    int oceanTravel = help.generator.Next(0, 3);
     int combatOcean = help.generator.Next(0,list.combatOcean.Count());
+    int oceanindex = help.generator.Next(0, list.desert.Count());
     int Index = help.generator.Next(0, 2);
-    int oceanTravel = help.generator.Next(0,3);
     int enemyLvlRandom = help.generator.Next(0,20);
     switch (oceanTravel)
     {
-        case 1: //MAKE A BOAT STORY CONTINUE
+        case 0: //MAKE A BOAT STORY CONTINUE
             if (list.pockets.Contains("Boat"))
             {
                 goto oceanTravel;
@@ -355,11 +363,23 @@ if (ocean == "Travel near ocean")
                 goto oceanTravel;
             }
         
-        case 2: //WRECKED BOAT
+        case 1: //WRECKED BOAT
             Console.WriteLine($"While traveling near the ocean you saw a wrecked boat\nRemaining stamina: {stats.stamina}");
-            break;
+            var wrected = AnsiConsole.Prompt(new SelectionPrompt<string>().PageSize(3).HighlightStyle(colorYellow).AddChoices(new[] { "Explore", "Travel more" }));
+            if (wrected == "Explore")
+            {
+                Console.Clear();
+                Console.WriteLine($"You found {list.desert[oceanindex]}");
+                Thread.Sleep(2000);
+                Console.Clear();
+                goto oceanTravel;
+            }
+            else
+            {
+                goto wrectedTravel;
+            }
         
-        case 3: //OCEAN COMBAT
+        case 2: //OCEAN COMBAT
             stats.enemyAttack = 8;
             stats.enemyHP = 35;
             int Run = help.generator.Next(0, 200);
@@ -446,9 +466,12 @@ else if (ocean == "Search near you for resources")
     }
 } //SEARCH NEAR YOU
 #endregion
-else if (ocean == "Inventory" || desert  == "Inventory")
+else if (ocean == "Inventory")
 {
-    Console.WriteLine("Coming soon");
+    AnsiConsole.Write(new FigletText("Coming soon").Color(Color.DodgerBlue2).Centered());
+    Thread.Sleep(1500);
+    Console.Clear();
+    goto oceanTravel;
     //var tableInv = new Table();
     //tableInv.AddColumn("Name");
     //tableInv.AddColumn($"{stats.playerName}");
