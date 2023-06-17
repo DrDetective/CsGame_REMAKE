@@ -6,29 +6,30 @@ using System.Threading.Tasks;
 
 namespace CsGame_REMAKE
 {
-    internal class List
+    internal class Lists
     {
         public List<string> pyramid = new List<string>();
         public List<string> desert = new List<string>();
         public List<string> secret = new List<string>();
         public List<string> combat = new List<string>();
-        public void itemsPyramid()
+        public List<string> combatOcean = new List<string>();
+        public List<string> endings = new List<string>();
+        public List<string> codes = new List<string>();
+        public List<string> pockets = new List<string>();
+        //public string[] pockets;
+        public Lists()
         {
             pyramid.Add("Hay");
             pyramid.Add("Iron bar");
             pyramid.Add("Bronze bar");
             pyramid.Add("Bricks");
-        }
-        public void itemDesert()
-        {
+
             desert.Add("Rocks");
             desert.Add("Rope");
             desert.Add("Small chunks of wood");
             desert.Add("Glass");
             desert.Add("Cloth");
-        }
-        public void itemSecret()
-        {
+
             secret.Add("ENERGYSWORD");
             secret.Add("HL");
             secret.Add("FSBERSERK");
@@ -37,12 +38,12 @@ namespace CsGame_REMAKE
             secret.Add("PLEB");
             secret.Add("TENSAZANGETSU");
             secret.Add("kamonevim");
-        }
-        public void combatEnemy()
-        {
+
             combat.Add("Snake");
             combat.Add("Scorpion");
-        }
 
+            combatOcean.Add("Piranna");
+            combatOcean.Add("Shark");
+        }
     }
 }
