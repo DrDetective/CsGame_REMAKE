@@ -5,12 +5,12 @@ using System.Diagnostics;
 Lists list = new Lists();
 Player stats = new Player();
 Helper help = new Helper();
-#region
+#region Colors
 var colorRed = new Style().Foreground(Color.Red);
 var colorYellow = new Style().Foreground(Color.Yellow);
 var colorOcean = new Style().Foreground(Color.DodgerBlue2);
 var colorInv = new Style().Foreground(Color.White);
-#endregion COLORS
+#endregion
 while (true)
 {
 menu:
@@ -62,10 +62,7 @@ menu:
         Process.Start(psi);
         Console.Clear();
     } //BUGS
-    else
-    {
-        return;
-    } //EXIT
+    else { return; } //EXIT
 } //START MENU
 stats.stamina = 50;
 stats.playerAttack = 2;
