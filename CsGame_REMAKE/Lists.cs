@@ -30,14 +30,14 @@ namespace CsGame_REMAKE
             desert.Add("Glass");
             desert.Add("Cloth");
 
-            secret.Add("ENERGYSWORD");
-            secret.Add("HL");
-            secret.Add("FSBERSERK");
-            secret.Add("ZENITH");
-            secret.Add("BLOODMOON");
-            secret.Add("PLEB");
-            secret.Add("TENSAZANGETSU");
-            secret.Add("kamonevim");
+            //secret.Add("ENERGYSWORD");
+            //secret.Add("HL");
+            //secret.Add("FSBERSERK");
+            //secret.Add("ZENITH");
+            //secret.Add("BLOODMOON");
+            //secret.Add("PLEB");
+            //secret.Add("TENSAZANGETSU");
+            //secret.Add("kamonevim");
 
             combat.Add("Snake");
             combat.Add("Scorpion");
