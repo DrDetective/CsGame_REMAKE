@@ -15,7 +15,7 @@ while (true)
 {
 menu:
     AnsiConsole.Write(new FigletText("Wanderer's Tale").Centered().Color(Color.Red));
-    var menu = AnsiConsole.Prompt(new SelectionPrompt<string>().PageSize(4).HighlightStyle(colorRed).AddChoices(new[] { "Start Game", "Credits","Report a bug", "Exit" }));
+    var menu = AnsiConsole.Prompt(new SelectionPrompt<string>().PageSize(4).HighlightStyle(colorRed).AddChoices(new[] { "Start Game", "Credits", "Report a bug", "Exit" }));
     if (menu == "Start Game")
     {
         Console.Clear();
@@ -26,7 +26,7 @@ menu:
         var credits = AnsiConsole.Prompt(new SelectionPrompt<string>().PageSize(3).HighlightStyle(colorRed).AddChoices(new[] { "Endings", "Updates", "Go back to title screen" }));
         if (credits == "Endings")
         {
-            list.endings.Add("test");
+            Lists.endings.Add("test");
             var endingsPanel = new Panel(" ");
             endingsPanel.Header = new PanelHeader("Endings");
             endingsPanel.Border = BoxBorder.Square;
@@ -106,10 +106,10 @@ ruinsTravel:
     stats.stamina -= 10;
     stats.hunger -= 5;
     stats.thirst -= 5;
-    int randomTravel = help.generator.Next(0,4);
+    int randomTravel = help.generator.Next(0, 4);
     int ruinsRandom = help.generator.Next(0, 2);
-    int ruinsItem = help.generator.Next(0, list.desert.Count);
-    int combatRng = help.generator.Next(0, list.combat.Count);
+    int ruinsItem = help.generator.Next(0, Lists.desert.Count);
+    int combatRng = help.generator.Next(0, Lists.combat.Count);
     switch (randomTravel)
     {
         case 0: //FOUND NOTHING
@@ -126,13 +126,13 @@ ruinsTravel:
                 switch (ruinsRandom)
                 {
                     case 0: //LIVING HELL SECRET ENDING
-                        if (list.endings.Contains("Living Hell"))
+                        if (Lists.endings.Contains("Living Hell"))
                         {
                             goto normalRuins;
                         } //ENDING CHECK
                         else
                         {
-                            list.endings.Add("Living Hell");
+                            Lists.endings.Add("Living Hell");
                             Console.WriteLine("You found a mysterious portal\n\rAs you go closer you become more curious to know whats in there");
                             Thread.Sleep(2250);
                             Console.Clear();
@@ -148,8 +148,8 @@ ruinsTravel:
                             goto travel;
                         } //SECRET ENDING
                     case 1: //NORMAL EXPLORE RUINS
-                        normalRuins:
-                        Console.WriteLine($"You found {list.desert[ruinsItem]}");
+                    normalRuins:
+                        Console.WriteLine($"You found {Lists.desert[ruinsItem]}");
                         Thread.Sleep(1750);
                         Console.Clear();
                         goto travel;
@@ -164,19 +164,19 @@ ruinsTravel:
             stats.enemyAttack = 3;
             stats.enemyHP = 20;
             int Run = help.generator.Next(0, 100);
-            Console.WriteLine($"While traveling you found dead rat and you see a {list.combat[combatRng]} coming towards you");
+            Console.WriteLine($"While traveling you found dead rat and you see a {Lists.combat[combatRng]} coming towards you");
             Thread.Sleep(2000);
             Console.Clear();
             while (stats.playerHP > 0 && stats.enemyHP > 0)
             {
             combat:
-                Console.WriteLine($"{stats.playerName} HP: {stats.playerHP}\n{list.combat[combatRng]} HP: {stats.enemyHP}");
+                Console.WriteLine($"{stats.playerName} HP: {stats.playerHP}\n{Lists.combat[combatRng]} HP: {stats.enemyHP}");
                 var combatDesert = AnsiConsole.Prompt(new SelectionPrompt<string>().PageSize(3).HighlightStyle(colorYellow).AddChoices(new[] { "Attack", "Run" }));
                 switch (combatDesert)
                 {
                     case "Attack":
                         stats.enemyHP -= stats.playerAttack;
-                        Console.WriteLine($"You dealt {stats.playerAttack} damage to {list.combat[combatRng]}");
+                        Console.WriteLine($"You dealt {stats.playerAttack} damage to {Lists.combat[combatRng]}");
                         Thread.Sleep(1500);
                         Console.Clear();
                         break;
@@ -194,7 +194,7 @@ ruinsTravel:
                 if (stats.enemyHP > 0)
                 {
                     stats.playerHP -= stats.enemyAttack;
-                    Console.WriteLine($"{list.combat[combatRng]} dealt {stats.enemyAttack} damage");
+                    Console.WriteLine($"{Lists.combat[combatRng]} dealt {stats.enemyAttack} damage");
                     Thread.Sleep(1500);
                     Console.Clear();
                 } //ENEMY TURN
@@ -220,14 +220,14 @@ ruinsTravel:
             Console.Clear();
             break;
         case 4: //PYRAMID
-            int pyramidIndex = help.generator.Next(0, list.pyramid.Count);
+            int pyramidIndex = help.generator.Next(0, Lists.pyramid.Count);
             Console.WriteLine($"While traveling you found a pyramid\nRemaining stamina: {stats.stamina}");
             Thread.Sleep(1500);
             Console.Clear();
             var pyramid = AnsiConsole.Prompt(new SelectionPrompt<string>().PageSize(3).HighlightStyle(colorYellow).AddChoices(new[] { "Explore", "Travel more" }));
             if (pyramid == "Explore")
             {
-                Console.WriteLine($"You found {list.pyramid[pyramidIndex]}");
+                Console.WriteLine($"You found {Lists.pyramid[pyramidIndex]}");
                 Thread.Sleep(1750);
                 Console.Clear();
                 goto travel;
@@ -244,26 +244,26 @@ else if (desert == "Search near you for resources")
     stats.hunger -= 5;
     stats.thirst -= 5;
     int rng = help.generator.Next(0, 2);
-    int searchDesert = help.generator.Next(0, list.desert.Count);
-    int secretIndex = help.generator.Next(0, list.secret.Count);
+    int searchDesert = help.generator.Next(0, Lists.desert.Count);
+    int secretIndex = help.generator.Next(0, Lists.secret.Count);
     switch (rng)
     {
         case 0: //SECRET CODE
-            if (list.secret.Contains(list.secret[secretIndex]))
+            if (Lists.secret.Contains(Lists.secret[secretIndex]))
             {
                 goto code;
             } //SECRET CODE CHECK
             else
             {
-                list.codes.Add(list.secret[secretIndex]);
-                Console.WriteLine($"You found a piece of paper\nIt says: {list.secret[secretIndex]}");
+                Lists.codes.Add(Lists.secret[secretIndex]);
+                Console.WriteLine($"You found a piece of paper\nIt says: {Lists.secret[secretIndex]}");
                 Thread.Sleep(1750);
                 Console.Clear();
                 goto travel;
             } //SECRET CODE
         case 1: //FOUND MATERIALS
         code:
-            Console.WriteLine($"You searched for few hours and found {list.desert[searchDesert]}\nRemaining stamina {stats.stamina}");
+            Console.WriteLine($"You searched for few hours and found {Lists.desert[searchDesert]}\nRemaining stamina {stats.stamina}");
             Thread.Sleep(2000);
             Console.Clear();
             goto travel;
@@ -339,19 +339,19 @@ while (stats.progressLvl >= 200)
 } //EXP TO 200 TO ADD NEW LEVEL
 if (ocean == "Travel near ocean")
 {
-    wrectedTravel:
+wrectedTravel:
     stats.stamina -= 10;
     stats.hunger -= 5;
     stats.thirst -= 5;
     int oceanTravel = help.generator.Next(0, 3);
-    int combatOcean = help.generator.Next(0,list.combatOcean.Count());
-    int oceanindex = help.generator.Next(0, list.desert.Count());
+    int combatOcean = help.generator.Next(0, Lists.combatOcean.Count());
+    int oceanindex = help.generator.Next(0, Lists.desert.Count());
     int Index = help.generator.Next(0, 2);
-    int enemyLvlRandom = help.generator.Next(0,20);
+    int enemyLvlRandom = help.generator.Next(0, 20);
     switch (oceanTravel)
     {
         case 0: //MAKE A BOAT STORY CONTINUE
-            if (list.pockets.Contains("Boat"))
+            if (Lists.pockets.Contains("Boat"))
             {
                 goto oceanTravel;
             }
@@ -359,14 +359,14 @@ if (ocean == "Travel near ocean")
             {
                 goto oceanTravel;
             }
-        
+
         case 1: //WRECKED BOAT
             Console.WriteLine($"While traveling near the ocean you saw a wrecked boat\nRemaining stamina: {stats.stamina}");
             var wrected = AnsiConsole.Prompt(new SelectionPrompt<string>().PageSize(3).HighlightStyle(colorYellow).AddChoices(new[] { "Explore", "Travel more" }));
             if (wrected == "Explore")
             {
                 Console.Clear();
-                Console.WriteLine($"You found {list.desert[oceanindex]}");
+                Console.WriteLine($"You found {Lists.desert[oceanindex]}");
                 Thread.Sleep(2000);
                 Console.Clear();
                 goto oceanTravel;
@@ -375,61 +375,65 @@ if (ocean == "Travel near ocean")
             {
                 goto wrectedTravel;
             }
-        
+
         case 2: //OCEAN COMBAT
-            stats.enemyAttack = 8;
-            stats.enemyHP = 35;
-            int Run = help.generator.Next(0, 200);
-            Console.WriteLine($"While traveling you see a {list.combatOcean[combatOcean]} coming towards you");
-            Thread.Sleep(2000);
-            Console.Clear();
-            while (stats.playerHP > 0 && stats.enemyHP > 0)
-            {
-            combat:
-                Console.WriteLine($"{stats.playerName} HP: {stats.playerHP}\n{list.combatOcean[combatOcean]} HP: {stats.enemyHP}");
-                var oceanCombat = AnsiConsole.Prompt(new SelectionPrompt<string>().PageSize(3).HighlightStyle(colorOcean).AddChoices(new[] { "Attack", "Run" }));
-                switch (oceanCombat)
-                {
-                    case "Attack":
-                        stats.enemyHP -= stats.playerAttack;
-                        Console.WriteLine($"You dealt {stats.playerAttack} damage to {list.combatOcean[combatOcean]}");
-                        Thread.Sleep(1500);
-                        Console.Clear();
-                        break;
-                    case "Run":
-                        if (Run <= 30)
-                        {
-                            Console.WriteLine("You ran away");
-                        }
-                        else
-                        {
-                            goto combat;
-                        }
-                        break;
-                } //PLAYER TURN
-                if (stats.enemyHP > 0)
-                {
-                    stats.playerHP -= stats.enemyAttack;
-                    Console.WriteLine($"{list.combatOcean[combatOcean]} dealt {stats.enemyAttack} damage");
-                    Thread.Sleep(1500);
-                    Console.Clear();
-                } //ENEMY TURN
-            } //OCEAN COMBAT
-            if (stats.playerHP > 0)
-            {
-                stats.progressLvl += Run;
-                Console.WriteLine("You won");
-                Thread.Sleep(1500);
-                Console.Clear();
-                goto oceanTravel;
-            } //W
-            else
-            {
-                Console.WriteLine("You lost");
-                Thread.Sleep(1500);
-                Console.Clear();
-                return;
-            } //L
+            help.Combat(combatOcean, colorOcean);
+            break;
+            #region OceanCombat
+            //stats.enemyAttack = 8;
+            //stats.enemyHP = 35;
+            //int Run = help.generator.Next(0, 200);
+            //Console.WriteLine($"While traveling you see a {Lists.combatOcean[combatOcean]} coming towards you");
+            //Thread.Sleep(2000);
+            //Console.Clear();
+            //while (stats.playerHP > 0 && stats.enemyHP > 0)
+            //{
+            //combat:
+            //    Console.WriteLine($"{stats.playerName} HP: {stats.playerHP}\n{Lists.combatOcean[combatOcean]} HP: {stats.enemyHP}");
+            //    var oceanCombat = AnsiConsole.Prompt(new SelectionPrompt<string>().PageSize(3).HighlightStyle(colorOcean).AddChoices(new[] { "Attack", "Run" }));
+            //    switch (oceanCombat)
+            //    {
+            //        case "Attack":
+            //            stats.enemyHP -= stats.playerAttack;
+            //            Console.WriteLine($"You dealt {stats.playerAttack} damage to {Lists.combatOcean[combatOcean]}");
+            //            Thread.Sleep(1500);
+            //            Console.Clear();
+            //            break;
+            //        case "Run":
+            //            if (Run <= 30)
+            //            {
+            //                Console.WriteLine("You ran away");
+            //            }
+            //            else
+            //            {
+            //                goto combat;
+            //            }
+            //            break;
+            //    } //PLAYER TURN
+            //    if (stats.enemyHP > 0)
+            //    {
+            //        stats.playerHP -= stats.enemyAttack;
+            //        Console.WriteLine($"{Lists.combatOcean[combatOcean]} dealt {stats.enemyAttack} damage");
+            //        Thread.Sleep(1500);
+            //        Console.Clear();
+            //    } //ENEMY TURN
+            //} //OCEAN COMBAT
+            //if (stats.playerHP > 0)
+            //{
+            //    stats.progressLvl += Run;
+            //    Console.WriteLine("You won");
+            //    Thread.Sleep(1500);
+            //    Console.Clear();
+            //    goto oceanTravel;
+            //} //W
+            //else
+            //{
+            //    Console.WriteLine("You lost");
+            //    Thread.Sleep(1500);
+            //    Console.Clear();
+            //    return;
+            //} //L
+            #endregion
     } //OCEAN TRAVEL OPTIONS
 } //OCEAN TRAVEL
 else if (ocean == "Search near you for resources")
@@ -438,25 +442,25 @@ else if (ocean == "Search near you for resources")
     stats.hunger -= 5;
     stats.thirst -= 5;
     int rng = help.generator.Next(0, 2);
-    int searchDesert = help.generator.Next(0, list.desert.Count);
-    int secretIndex = help.generator.Next(0, list.secret.Count);
+    int searchDesert = help.generator.Next(0, Lists.desert.Count);
+    int secretIndex = help.generator.Next(0, Lists.secret.Count);
     switch (rng)
     {
         case 0: //SECRET CODE
-            if (list.secret.Contains(list.secret[secretIndex]))
+            if (Lists.secret.Contains(Lists.secret[secretIndex]))
             {
                 goto code;
             } //SECRET CODE CHECK
             else
             {
-                Console.WriteLine($"You found a piece of paper\nIt says: {list.secret[secretIndex]}");
+                Console.WriteLine($"You found a piece of paper\nIt says: {Lists.secret[secretIndex]}");
                 Thread.Sleep(1750);
                 Console.Clear();
                 goto oceanTravel;
             } //SECRET CODE
         case 1: //FOUND MATERIALS
-        code: 
-            Console.WriteLine($"You searched for few hours and found {list.desert[searchDesert]}\nRemaining stamina {stats.stamina}");
+        code:
+            Console.WriteLine($"You searched for few hours and found {Lists.desert[searchDesert]}\nRemaining stamina {stats.stamina}");
             Thread.Sleep(2000);
             Console.Clear();
             goto oceanTravel;

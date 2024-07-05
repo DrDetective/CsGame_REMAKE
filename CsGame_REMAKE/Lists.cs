@@ -8,15 +8,15 @@ namespace CsGame_REMAKE
 {
     internal class Lists
     {
-        public List<string> pyramid = new List<string>();
-        public List<string> desert = new List<string>();
-        public List<string> secret = new List<string>();
-        public List<string> combat = new List<string>();
-        public List<string> combatOcean = new List<string>();
-        public List<string> endings = new List<string>();
-        public List<string> codes = new List<string>();
-        public List<string> pockets = new List<string>();
-        //public string[] pockets;
+        public static List<string> pyramid = new List<string>();
+        public static List<string> desert = new List<string>();
+        public static List<string> secret = new List<string>();
+        public static List<string> combat = new List<string>();
+        public static List<string> combatOcean = new List<string>();
+        public static List<string> endings = new List<string>();
+        public static List<string> codes = new List<string>();
+        public static List<string> pockets = new List<string>();
+        //public static string[] pockets;
         public Lists()
         {
             pyramid.Add("Hay");

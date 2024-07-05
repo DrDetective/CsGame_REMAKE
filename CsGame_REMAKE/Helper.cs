@@ -10,23 +10,23 @@ namespace CsGame_REMAKE
     internal class Helper
     {
         public Random generator = new Random();
-        public void Combat()
+        public void Combat(int combat, Style color) //pridat parametr na list combat
         {
             Player stats = new Player();
             int Run = generator.Next(0, 200);
-            Console.WriteLine($"While traveling you see a {list.combatOcean[combatOcean]} coming towards you");
+            Console.WriteLine($"While traveling you see a {Lists.combatOcean[combat]} coming towards you");
             Thread.Sleep(2000);
             Console.Clear();
             while (stats.playerHP > 0 && stats.enemyHP > 0)
             {
             combat:
-                Console.WriteLine($"{stats.playerName} HP: {stats.playerHP}\n{list.combatOcean[combatOcean]} HP: {stats.enemyHP}");
-                var oceanCombat = AnsiConsole.Prompt(new SelectionPrompt<string>().PageSize(3).HighlightStyle(colorOcean).AddChoices(new[] { "Attack", "Run" }));
+                Console.WriteLine($"{stats.playerName} HP: {stats.playerHP}\n{Lists.combatOcean[combat]} HP: {stats.enemyHP}");
+                var oceanCombat = AnsiConsole.Prompt(new SelectionPrompt<string>().PageSize(3).HighlightStyle(color).AddChoices(new[] { "Attack", "Run" }));
                 switch (oceanCombat)
                 {
                     case "Attack":
                         stats.enemyHP -= stats.playerAttack;
-                        Console.WriteLine($"You dealt {stats.playerAttack} damage to {list.combatOcean[combatOcean]}");
+                        Console.WriteLine($"You dealt {stats.playerAttack} damage to {Lists.combatOcean[combat]}");
                         Thread.Sleep(1500);
                         Console.Clear();
                         break;
@@ -44,7 +44,7 @@ namespace CsGame_REMAKE
                 if (stats.enemyHP > 0)
                 {
                     stats.playerHP -= stats.enemyAttack;
-                    Console.WriteLine($"{list.combatOcean[combatOcean]} dealt {stats.enemyAttack} damage");
+                    Console.WriteLine($"{Lists.combatOcean[combat]} dealt {stats.enemyAttack} damage");
                     Thread.Sleep(1500);
                     Console.Clear();
                 } //ENEMY TURN
