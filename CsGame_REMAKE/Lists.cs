@@ -8,14 +8,14 @@ namespace CsGame_REMAKE
 {
     internal class Lists
     {
-        public static List<string> pyramid = new List<string>();
-        public static List<string> desert = new List<string>();
-        public static List<string> secret = new List<string>();
-        public static List<string> combat = new List<string>();
-        public static List<string> combatOcean = new List<string>();
-        public static List<string> endings = new List<string>();
-        public static List<string> codes = new List<string>();
-        public static List<string> pockets = new List<string>();
+        public List<string> pyramid = new List<string>();
+        public List<string> desert = new List<string>();
+        public List<string> secret = new List<string>();
+        public List<string> combatDesert = new List<string>();
+        public List<string> combatOcean = new List<string>();
+        public List<string> endings = new List<string>();
+        public List<string> codes = new List<string>();
+        public List<string> pockets = new List<string>();
         //public static string[] pockets;
         public Lists()
         {
@@ -39,8 +39,8 @@ namespace CsGame_REMAKE
             secret.Add("TENSAZANGETSU");
             secret.Add("kamonevim");
 
-            combat.Add("Snake");
-            combat.Add("Scorpion");
+            combatDesert.Add("Snake");
+            combatDesert.Add("Scorpion");
 
             combatOcean.Add("Piranna");
             combatOcean.Add("Shark");

@@ -9,20 +9,26 @@ namespace CsGame_REMAKE
 {
     internal class Player
     {
-        public string playerName { get; set; }
-        public int hunger = 100;
-        public int thirst = 100;
-        public int playerHP = 100;
-        public int lvl = 0;
-        public int progressLvl;
-        public int mana = 0;
-        public int armor = 0;
-        public int stamina;
-        public int healAmount;
-        public int playerAttack;
-        public int enemyHP;
-        public int enemyAttack;
-        public int enemyMana;
-        public int enemyLvl;
+        #region Player
+        public static string playerName { get; set; }
+        public static int hunger = 100;
+        public static int thirst = 100;
+        public static int playerHP = 100;
+        public static int lvl = 0;
+        public static int maxlvl = 5;
+        public static int progressLvl;
+        public static int mana = 0;
+        public static int armor = 0;
+        public static int stamina = 50;
+        public static int maxStamina = 50;
+        public static int healAmount;
+        public static int playerAttack = 2;
+        #endregion
+        #region Enemy
+        public static int enemyHP = 20;
+        public static int enemyAttack = 3;
+        public static int enemyMana;
+        public static int enemyLvl;
+        #endregion
     }
 }

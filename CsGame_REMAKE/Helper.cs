@@ -9,49 +9,51 @@ namespace CsGame_REMAKE
 {
     internal class Helper
     {
-        public Random generator = new Random();
-        public void Combat(int combat, Style color) //pridat parametr na list combat
+        public static Random generator = new Random();
+        public void TestPlayer()
         {
-            Player stats = new Player();
+            if (Player.playerName == "test")
+            {
+                Player.stamina = 9999;
+                Player.playerHP = 9999;
+                Player.playerAttack = 9999;
+            } //TESTING NAME
+        }
+        public void Combat(int combatIndex, List<string> type, Style color)
+        {
             int Run = generator.Next(0, 200);
-            Console.WriteLine($"While traveling you see a {Lists.combatOcean[combat]} coming towards you");
+            Console.WriteLine($"While traveling you see a {type[combatIndex]} coming towards you");
             Thread.Sleep(2000);
             Console.Clear();
-            while (stats.playerHP > 0 && stats.enemyHP > 0)
+            while (Player.playerHP > 0 && Player.enemyHP > 0)
             {
             combat:
-                Console.WriteLine($"{stats.playerName} HP: {stats.playerHP}\n{Lists.combatOcean[combat]} HP: {stats.enemyHP}");
+                Console.WriteLine($"{Player.playerName}'s HP: {Player.playerHP}\n{type[combatIndex]}'s HP: {Player.enemyHP}");
                 var oceanCombat = AnsiConsole.Prompt(new SelectionPrompt<string>().PageSize(3).HighlightStyle(color).AddChoices(new[] { "Attack", "Run" }));
                 switch (oceanCombat)
                 {
                     case "Attack":
-                        stats.enemyHP -= stats.playerAttack;
-                        Console.WriteLine($"You dealt {stats.playerAttack} damage to {Lists.combatOcean[combat]}");
+                        Player.enemyHP -= Player.playerAttack;
+                        Console.WriteLine($"You dealt {Player.playerAttack} damage to {type[combatIndex]}");
                         Thread.Sleep(1500);
                         Console.Clear();
                         break;
                     case "Run":
-                        if (Run <= 30)
-                        {
-                            Console.WriteLine("You ran away");
-                        }
-                        else
-                        {
-                            goto combat;
-                        }
+                        if (Run <= 30) { Console.WriteLine("You ran away"); }
+                        else { goto combat; }
                         break;
                 } //PLAYER TURN
-                if (stats.enemyHP > 0)
+                if (Player.enemyHP > 0)
                 {
-                    stats.playerHP -= stats.enemyAttack;
-                    Console.WriteLine($"{Lists.combatOcean[combat]} dealt {stats.enemyAttack} damage");
+                    Player.playerHP -= Player.enemyAttack;
+                    Console.WriteLine($"{type[combatIndex]} dealt {Player.enemyAttack} damage");
                     Thread.Sleep(1500);
                     Console.Clear();
                 } //ENEMY TURN
             } //OCEAN COMBAT
-            if (stats.playerHP > 0)
+            if (Player.playerHP > 0)
             {
-                stats.progressLvl += Run;
+                Player.progressLvl += Run;
                 Console.WriteLine("You won");
                 Thread.Sleep(1500);
                 Console.Clear();
@@ -64,5 +66,41 @@ namespace CsGame_REMAKE
                 return;
             } //L
         }
+        public void Inventory(Style color, Color borderColor)
+        {
+            //var colorInv = new Style().Foreground(Color.White);
+            #region Table Info
+            var tableInv = new Table();
+            tableInv.BorderColor(borderColor);
+            tableInv.Border(TableBorder.AsciiDoubleHead);
+            tableInv.AddColumn("Name");
+            tableInv.AddColumn($"{Player.playerName}");
+            tableInv.AddColumn("Pockets");
+            tableInv.AddRow("LVL", $"{Player.lvl}");
+            tableInv.AddRow("Progress", $"{Player.progressLvl}");
+            tableInv.AddRow("HP", $"{Player.playerHP}");
+            tableInv.AddRow("MP", $"{Player.mana}");
+            tableInv.AddRow("Hunger", $"{Player.hunger}");
+            tableInv.AddRow("Thirst", $"{Player.thirst}");
+            tableInv.AddRow("Stamina", $"{Player.stamina}");
+            tableInv.AddRow("Armor", $"{Player.armor}");
+            tableInv.AddRow("Damage", $"{Player.playerAttack}");
+            AnsiConsole.Write(tableInv);
+            #endregion
+            var inventory = AnsiConsole.Prompt(new SelectionPrompt<string>().PageSize(3).HighlightStyle(color).AddChoices(new[] { "Crafting", "Cooking", "Go back" }));
+            switch (inventory)
+            {
+                case "Crafting":
+                    Console.WriteLine("Coming Soon!");
+                    break;
+
+                case "Cooking":
+                    Console.WriteLine("Coming Soon!");
+                    break;
+            }
+            Console.Clear();
+        }
     }
 }
+
+//make like 1x leather 4x meat etc extract from list "pockets"
