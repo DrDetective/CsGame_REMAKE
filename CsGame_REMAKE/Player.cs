@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,11 +18,12 @@ namespace CsGame_REMAKE
         public static int lvl = 0;
         public static int maxlvl = 5;
         public static int progressLvl;
+        public static int LVLRequirment = 100;
         public static int mana = 0;
         public static int armor = 0;
         public static int stamina = 50;
         public static int maxStamina = 50;
-        public static int healAmount;
+        public static int healAmount = 0;
         public static int playerAttack = 2;
         #endregion
         #region Enemy

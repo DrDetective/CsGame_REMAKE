@@ -13,32 +13,9 @@ namespace CsGame_REMAKE
     {
         private bool intro = false;
         private bool endingCheck = false;
-        private bool RuinsChecker = false;
-        private bool PyramidChecker = false;
-        private void LevelUP()
-        {
-            if (Player.progressLvl >= 100)
-            {
-                Player.lvl++;
-                Player.progressLvl -= 100;
-                Console.WriteLine($"You leveled up by one level, you currently have {Player.lvl}/{Player.maxlvl}");
-                Thread.Sleep(2000);
-                Console.Clear();
-            } //NEW LEVEL
-        }
-        private void OutOfStamina()
-        {
-            if (Player.stamina == 0)
-            {
-                Console.WriteLine("You passed out, because you were out of stamina");
-                Thread.Sleep(2000);
-                Console.Clear();
-                Player.stamina += 50;
-                //RuinsChecker = false;
-                //PyramidChecker = false;
-                Desert_Start();
-            } //OUT OF STAMINA
-        }
+        //private bool RuinsChecker = false;
+        //private bool PyramidChecker = false;
+
         private void DesertIntro()
         {
             if (!intro) { return; }
@@ -53,11 +30,12 @@ namespace CsGame_REMAKE
             Lists list = new Lists();
             Helper help = new Helper();
             var colorYellow = new Style().Foreground(Color.Yellow);
+            int desertItemsIndex = Helper.generator.Next(0, list.desertItems.Count);
             bool OceanChecker = false;
             DesertIntro();
             var desert = AnsiConsole.Prompt(new SelectionPrompt<string>().PageSize(3).HighlightStyle(colorYellow).AddChoices(new[] { "Travel through desert", "Search near you for resources", "Inventory" }));
-            LevelUP();
-            OutOfStamina();
+            help.LevelUP(100);
+            help.OutOfStamina(50);
 
             switch (desert)
             {
@@ -69,7 +47,6 @@ namespace CsGame_REMAKE
                     Player.thirst -= 5;
                     int randomTravel = Helper.generator.Next(0, 100);
                     int ruinsRandom = Helper.generator.Next(0, 100);
-                    int ruinsItem = Helper.generator.Next(0, list.desert.Count);
                     int combatRng = Helper.generator.Next(0, list.combatDesert.Count);
                     #endregion
                     if (randomTravel > 0 && randomTravel <= 20)
@@ -84,7 +61,7 @@ namespace CsGame_REMAKE
                         //if (RuinsChecker == true) { goto ruinsTravel; }
                         Console.WriteLine($"You found old ruins\nRemaining stamina: {Player.stamina}/{Player.maxStamina}");
                         var ruins = AnsiConsole.Prompt(new SelectionPrompt<string>().PageSize(3).HighlightStyle(colorYellow).AddChoices(new[] { "Explore", "Travel more" }));
-                        RuinsChecker = true;
+                        //RuinsChecker = true;
                         if (ruins == "Explore")
                         {
                             if (ruinsRandom > 90)
@@ -112,7 +89,8 @@ namespace CsGame_REMAKE
                             }
                             else if (ruinsRandom <= 90)
                             {
-                                Console.WriteLine($"You found {list.desert[ruinsItem]}");
+                                Console.WriteLine($"You found {list.desertItems[desertItemsIndex]}");
+                                //list.pockets.Add(list.desertItems[desertItemsIndex]);
                                 Thread.Sleep(1750);
                                 Console.Clear();
                                 Desert_Start();
@@ -123,14 +101,15 @@ namespace CsGame_REMAKE
                     else if (randomTravel > 50 && randomTravel <= 70)
                     {
                         //if (PyramidChecker == true) { goto ruinsTravel; }
-                        int pyramidIndex = Helper.generator.Next(0, list.pyramid.Count);
+                        int pyramidIndex = Helper.generator.Next(0, list.pyramidItems.Count);
                         Console.WriteLine($"While traveling you found a pyramid\nRemaining stamina: {Player.stamina}/{Player.maxStamina}");
                         Thread.Sleep(1500);
                         var pyramid = AnsiConsole.Prompt(new SelectionPrompt<string>().PageSize(3).HighlightStyle(colorYellow).AddChoices(new[] { "Explore", "Travel more" }));
-                        PyramidChecker = true;
+                        //PyramidChecker = true;
                         if (pyramid == "Explore")
                         {
-                            Console.WriteLine($"You found {list.pyramid[pyramidIndex]}");
+                            Console.WriteLine($"You found {list.pyramidItems[pyramidIndex]}");
+                            list.pockets.Add(list.pyramidItems[pyramidIndex]);
                             Thread.Sleep(1750);
                             Console.Clear();
                             Desert_Start();
@@ -139,7 +118,7 @@ namespace CsGame_REMAKE
                     } //Found Pyramid
                     else if (randomTravel > 70 && randomTravel <= 95)
                     {
-                        help.Combat(combatRng, list.combatDesert, colorYellow);
+                        help.Combat(combatRng, list.combatDesert, colorYellow, list.desertItems, desertItemsIndex, 20, 3);
                     } //Combat
                     else if (randomTravel > 95 && randomTravel <= 100)
                     {
@@ -157,24 +136,24 @@ namespace CsGame_REMAKE
                     Player.hunger -= 5;
                     Player.thirst -= 5;
                     int rng = Helper.generator.Next(0, 100);
-                    int searchDesert = Helper.generator.Next(0, list.desert.Count);
-                    int secretIndex = Helper.generator.Next(0, list.secret.Count);
+                    //int secretIndex = Helper.generator.Next(0, list.secret.Count);
                     #endregion
-                    if (rng <= 20)
+                    //if (rng <= 20) FIX with better statement
+                    //{
+                    //    if (list.secret.Contains(list.secret[secretIndex])) { return; } //SECRET CODE CHECK
+                    //    else
+                    //    {
+                    //        list.codes.Add(list.secret[secretIndex]);
+                    //        Console.WriteLine($"You found a piece of paper\nIt says: {list.secret[secretIndex]}");
+                    //        Thread.Sleep(1750);
+                    //        Console.Clear();
+                    //        Desert_Start();
+                    //    } //SECRET CODE
+                    //} //Found Secret Code
+                    if (rng >= 0)
                     {
-                        if (list.secret.Contains(list.secret[secretIndex])) { return; } //SECRET CODE CHECK
-                        else
-                        {
-                            list.codes.Add(list.secret[secretIndex]);
-                            Console.WriteLine($"You found a piece of paper\nIt says: {list.secret[secretIndex]}");
-                            Thread.Sleep(1750);
-                            Console.Clear();
-                            Desert_Start();
-                        } //SECRET CODE
-                    } //Found Secret Code
-                    else if (rng >= 20)
-                    {
-                        Console.WriteLine($"You searched for few hours and found {list.desert[searchDesert]}\nRemaining stamina {Player.stamina}/{Player.maxStamina}");
+                        Console.WriteLine($"You searched for few hours and found {list.desertItems[desertItemsIndex]}\nRemaining stamina {Player.stamina}/{Player.maxStamina}");
+                        list.pockets.Add(list.desertItems[desertItemsIndex]);
                         Thread.Sleep(2000);
                         Console.Clear();
                         Desert_Start();
@@ -182,7 +161,7 @@ namespace CsGame_REMAKE
                     break;
 
                 case "Inventory":
-                    help.Inventory(colorYellow, Color.Yellow);
+                    help.Inventory(colorYellow, Color.Yellow, list.pockets);
                     break;
             }
             if (OceanChecker == true) { return; }

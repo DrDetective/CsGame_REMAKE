@@ -1,6 +1,7 @@
 ﻿using Spectre.Console;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,9 +20,35 @@ namespace CsGame_REMAKE
                 Player.playerAttack = 9999;
             } //TESTING NAME
         }
-        public void Combat(int combatIndex, List<string> type, Style color)
+        public void LevelUP(int requirment)
+        {
+            if (Player.progressLvl >= requirment)
+            {
+                Player.lvl++;
+                Player.progressLvl -= requirment;
+                Console.WriteLine($"You leveled up!\nYou currently have {Player.lvl}/{Player.maxlvl} LVLs");
+                Thread.Sleep(2000);
+                Console.Clear();
+            } //NEW LEVEL
+        }
+        public void OutOfStamina(int stamina)
+        {
+            if (Player.stamina == 0)
+            {
+                Console.WriteLine("You passed out, because you were out of stamina");
+                Thread.Sleep(2000);
+                Console.Clear();
+                Player.stamina += stamina;
+                //RuinsChecker = false;
+                //PyramidChecker = false;
+                //Desert_Start();
+            } //OUT OF STAMINA
+        }
+        public void Combat(int combatIndex, List<string> type, Style color, List<string> Items, int ItemsIndex, int EnemyHP, int EnemyATT)
         {
             int Run = generator.Next(0, 200);
+            Player.enemyHP = EnemyHP;
+            Player.enemyAttack = EnemyATT;
             Console.WriteLine($"While traveling you see a {type[combatIndex]} coming towards you");
             Thread.Sleep(2000);
             Console.Clear();
@@ -54,7 +81,7 @@ namespace CsGame_REMAKE
             if (Player.playerHP > 0)
             {
                 Player.progressLvl += Run;
-                Console.WriteLine("You won");
+                Console.WriteLine($"You won against {type[combatIndex]} and found {Items[ItemsIndex]}");
                 Thread.Sleep(1500);
                 Console.Clear();
             } //W
@@ -66,18 +93,28 @@ namespace CsGame_REMAKE
                 return;
             } //L
         }
-        public void Inventory(Style color, Color borderColor)
+        public void Inventory(Style color, Color borderColor, List<string> items)
         {
             //var colorInv = new Style().Foreground(Color.White);
             #region Table Info
             var tableInv = new Table();
+            Lists list = new Lists();
             tableInv.BorderColor(borderColor);
             tableInv.Border(TableBorder.AsciiDoubleHead);
-            tableInv.AddColumn("Name");
             tableInv.AddColumn($"{Player.playerName}");
+            tableInv.AddColumn("");
             tableInv.AddColumn("Pockets");
+            foreach (var item in items)
+            {
+                foreach (var multiItem in item.GroupBy(x => x).Where(g => g.Count() > 1).Select(g => new { Value = g.Key, Count = g.Count() }))
+                    //Debug.WriteLine($"{multiItem.Value} x {multiItem.Count}");
+                    tableInv.AddRow($"{multiItem.Count}x {multiItem.Value}");
+                tableInv.AddRow($"1x {item}");
+                Debug.WriteLine(item);
+            }
+
             tableInv.AddRow("LVL", $"{Player.lvl}");
-            tableInv.AddRow("Progress", $"{Player.progressLvl}");
+            tableInv.AddRow("Progress", $"{Player.progressLvl}/{Player.LVLRequirment}");
             tableInv.AddRow("HP", $"{Player.playerHP}");
             tableInv.AddRow("MP", $"{Player.mana}");
             tableInv.AddRow("Hunger", $"{Player.hunger}");
@@ -88,6 +125,10 @@ namespace CsGame_REMAKE
             AnsiConsole.Write(tableInv);
             #endregion
             var inventory = AnsiConsole.Prompt(new SelectionPrompt<string>().PageSize(3).HighlightStyle(color).AddChoices(new[] { "Crafting", "Cooking", "Go back" }));
+            foreach (var item in items)
+            {
+                Console.WriteLine(item);
+            }
             switch (inventory)
             {
                 case "Crafting":

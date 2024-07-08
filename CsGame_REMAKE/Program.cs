@@ -138,6 +138,12 @@ desert.Desert_Start();
 
 
 
+//var values = new string[6] { "red", "green", "blue", "red", "red", "green" };
+//foreach (var itemm in values.GroupBy(x => x).Where(g => g.Count() > 1).Select(g => new { Value = g.Key, Count = g.Count() }))
+//    Debug.WriteLine($"{itemm.Value} x {itemm.Count}");
+
+
+
 //endings
 //FIX INVENTORY
 //ADD RANDOM CHANCE OF ENCOUNTER? KRAKEN
