@@ -55,7 +55,7 @@ namespace CsGame_REMAKE
                         Console.WriteLine($"You traveled for few hours and found nothing\nRemaining stamina: {Player.stamina}/{Player.maxStamina}");
                         Thread.Sleep(2500);
                         Console.Clear();
-                        Desert_Start();
+                        //Desert_Start();
                     } //Found Nothing
                     else if (randomTravel > 20 && randomTravel <= 50)
                     {
@@ -85,7 +85,6 @@ namespace CsGame_REMAKE
                                     Console.WriteLine("Secret ending: Living Hell");
                                     Thread.Sleep(1500);
                                     Console.Clear();
-                                    //File.WriteAllText(Player.playerName, "Living Hell");
                                 } //SECRET ENDING
                             } //5% chance to find secret ending
                             else if (ruinsRandom <= 95)
@@ -94,7 +93,7 @@ namespace CsGame_REMAKE
                                 Lists.pockets.Add(list.desertItems[desertItemsIndex]);
                                 Thread.Sleep(1750);
                                 Console.Clear();
-                                Desert_Start();
+                                //Desert_Start();
                             } //95% chance to find resources
                         } //EXPLORE RUINS
                         else { Console.Clear(); goto ruinsTravel; } //RETURN TO TRAVEL MORE
@@ -113,15 +112,15 @@ namespace CsGame_REMAKE
                             Lists.pockets.Add(list.pyramidItems[pyramidIndex]);
                             Thread.Sleep(1750);
                             Console.Clear();
-                            Desert_Start();
+                            //Desert_Start();
                         } //EXPLORE PYRAMIDS
                         else { Console.Clear(); goto ruinsTravel; } //RETURN TO TRAVEL MORE
                     } //Found Pyramid
                     else if (randomTravel > 70 && randomTravel <= 95)
                     {
-                        help.Combat(combatRng, list.combatDesert, colorYellow, list.desertItems, desertItemsIndex, 20, 3);
+                        help.Combat(combatRng, list.combatDesert, colorYellow, list.desertItems, desertItemsIndex, 20, 3, Player.EnemyHPBooster, Player.EnemyDamageBooster);
                     } //Combat
-                    else if (randomTravel > 95 && randomTravel <= 100)
+                    else if (randomTravel > 95 && randomTravel <= 100 || Lists.pockets.Count() == 10)
                     {
                         OceanChecker = true;
                         Console.WriteLine("As You traveled for what felt like years you see a palm tree in distance\nyou feel as if you got your life back and made a run for it\nYou are in a new area");
@@ -137,7 +136,7 @@ namespace CsGame_REMAKE
                     Player.hunger -= 5;
                     Player.thirst -= 5;
                     int rng = Helper.generator.Next(0, 100);
-                    int secretIndex = Helper.generator.Next(0, list.secret.Count);
+                    int secretIndex = Helper.generator.Next(0, Lists.secret.Count);
                     #endregion
                     if (rng < 10)
                     {
@@ -145,12 +144,12 @@ namespace CsGame_REMAKE
                         else
                         {
                             CodeChecker = true;
-                            list.Foundcodes.Add(list.secret[secretIndex]);
-                            Console.WriteLine($"You found a piece of paper\nIt says: {list.secret[secretIndex]}");
+                            list.Foundcodes.Add(Lists.secret[secretIndex]);
+                            Console.WriteLine($"You found a piece of paper\nIt says: {Lists.secret[secretIndex]}");
                             Thread.Sleep(1750);
                             Console.Clear();
-                            list.secret.Remove(list.secret[secretIndex]);
-                            Desert_Start();
+                            //list.secret.Remove(list.secret[secretIndex]);
+                            //Desert_Start();
                         } //SECRET CODE
                     } //Found Secret Code 10%
                     if (rng >= 10)
@@ -159,7 +158,7 @@ namespace CsGame_REMAKE
                         Lists.pockets.Add(list.desertItems[desertItemsIndex]);
                         Thread.Sleep(2000);
                         Console.Clear();
-                        Desert_Start();
+                        //Desert_Start();
                     } //Found resources 90%
                     break;
 

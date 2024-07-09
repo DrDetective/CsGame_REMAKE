@@ -5,12 +5,31 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
+using System.Xml.Linq;
 
 namespace CsGame_REMAKE
 {
     internal class Helper
     {
         public static Random generator = new Random();
+        public string InputCode;
+        private string ItemName;
+        private int ItemDamage;
+        private int ItemCritDamage;
+        private int ItemCritChance;
+        private string ItemDes;
+        private void ShowSecretItem(string Name, string Description, int Damage, int Crit, int CritChance)
+        {
+            var tableItem = new Table();
+            tableItem.AsciiDoubleHeadBorder();
+            tableItem.AddColumn(Name);
+            tableItem.AddRow($"Damage: {Damage.ToString()}");
+            tableItem.AddRow($"Critical Damage: {Crit.ToString()}");
+            tableItem.AddRow($"Critical Chance: {CritChance.ToString()}%");
+            tableItem.AddRow($"Item Description: {Description}");
+            AnsiConsole.Write(tableItem);
+        }
         public void TestPlayer()
         {
             if (Player.playerName == "test")
@@ -44,11 +63,19 @@ namespace CsGame_REMAKE
                 //Desert_Start();
             } //OUT OF STAMINA
         }
-        public void Combat(int combatIndex, List<string> type, Style color, List<string> Items, int ItemsIndex, int EnemyHP, int EnemyATT)
+        public void Combat(int combatIndex, List<string> type, Style color, List<string> Items, int ItemsIndex, int EnemyHP, int EnemyATT, int EnemyBoostHP, int EnemyBoostATT)
         {
             int Run = generator.Next(0, 200);
-            Player.enemyHP = EnemyHP;
-            Player.enemyAttack = EnemyATT;
+            if (Player.noobDiff)
+            {
+                Player.enemyHP = EnemyHP / 2;
+                Player.enemyAttack = EnemyATT - 2; //for rn cuz EnemyAtt is 3
+            }
+            else
+            {
+                Player.enemyHP = EnemyHP * EnemyBoostHP;
+                Player.enemyAttack = EnemyATT + EnemyBoostATT;
+            }
             Console.WriteLine($"While traveling you see a {type[combatIndex]} coming towards you");
             Thread.Sleep(2000);
             Console.Clear();
@@ -65,7 +92,7 @@ namespace CsGame_REMAKE
                         Thread.Sleep(1500);
                         Console.Clear();
                         break;
-                    case "Run":
+                    case "Run": //30% chance to run
                         if (Run <= 30) { Console.WriteLine("You ran away"); }
                         else { Console.Clear(); goto combat; }
                         break;
@@ -128,13 +155,79 @@ namespace CsGame_REMAKE
             {
                 case "Crafting":
                     Console.WriteLine("Coming Soon!");
+                    Thread.Sleep(2000);
+                    Console.Clear();
                     break;
 
                 case "Cooking":
                     Console.WriteLine("Coming Soon!");
+                    Thread.Sleep(2000);
+                    Console.Clear();
                     break;
             }
             Console.Clear();
+        }
+        public void CodeChanger()
+        {
+            if (!Lists.secret.Contains(InputCode))
+            {
+                Debug.WriteLine(InputCode);
+                switch (InputCode)
+                {
+                    case "energysword":
+                        ItemName = "Energy Sword";
+                        ItemDamage = 200;
+                        ItemCritDamage = 450;
+                        ItemCritChance = 35;
+                        break;
+
+                    case "hl":
+                        ItemName = "Crowbar";
+                        ItemDamage = 50;
+                        ItemCritDamage = 110;
+                        ItemCritChance = 48;
+                        ItemDes = "Stolen crowbar from some guy named G. Freeman";
+                        break;
+
+                    case "fsberserk":
+                        ItemName = "Dragon Slayer";
+                        ItemDamage = 550;
+                        ItemCritDamage = 1270;
+                        ItemCritChance = 20;
+                        break;
+
+                    case "zenith":
+                        ItemName = "Zenith";
+                        ItemDamage = 478;
+                        ItemCritDamage = 678;
+                        ItemCritChance = 39;
+                        break;
+
+                    case "bloodmoon":
+                        Console.WriteLine("You unlocked hard difficulty");
+                        Player.EnemyDamageBooster = 10;
+                        Player.EnemyHPBooster = 5;
+                        return;
+
+                    case "noob":
+                        Console.WriteLine("You unlocked easy difficulty");
+                        Player.noobDiff = true;
+                        return;
+
+                    case "tansazangetsu":
+                        ItemName = "Tansa Zangetsu";
+                        ItemDamage = 386;
+                        ItemCritDamage = 756;
+                        ItemCritChance = 40;
+                        break;
+
+                    case "livinghell":
+                        break;
+                }
+                ShowSecretItem(ItemName, ItemDes, ItemDamage, ItemCritDamage, ItemCritChance);
+
+            }
+            else { Debug.WriteLine(InputCode); Console.Clear(); return; }
         }
     }
 }

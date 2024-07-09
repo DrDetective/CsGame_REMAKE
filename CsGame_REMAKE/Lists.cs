@@ -17,7 +17,7 @@ namespace CsGame_REMAKE
         public List<string> combatOcean = new List<string>();
         #endregion
         #region Other
-        public List<string> secret = new List<string>();
+        public static List<string> secret = new List<string>();
         public static List<string> endings = new List<string>();
         public List<string> Foundcodes = new List<string>();
         public static List<string> pockets = new List<string>();
@@ -40,9 +40,9 @@ namespace CsGame_REMAKE
             secret.Add("fsberserk");
             secret.Add("zenith");
             secret.Add("bloodmoon");
-            secret.Add("pleb");
+            secret.Add("noob");
             secret.Add("tensazangetsu");
-            secret.Add("kamonevim");
+            secret.Add("livinghell");
 
             combatDesert.Add("Snake");
             combatDesert.Add("Scorpion");
