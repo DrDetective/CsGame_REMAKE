@@ -20,17 +20,20 @@ menu:
     else if (menu == "Credits")
     {
         var credits = AnsiConsole.Prompt(new SelectionPrompt<string>().PageSize(3).HighlightStyle(colorRed).AddChoices(new[] { "Endings", "Updates", "Go back to title screen" }));
-        if (credits == "Endings")
+        if (credits == "Endings") //fix by inserting text under Header "Endings" or something
         {
-            Console.WriteLine("Coming soon!");
-            //Lists.endings.Add("test");
-            //var endingsPanel = new Panel(" ");
-            //endingsPanel.Header = new PanelHeader("Endings");
-            //endingsPanel.Border = BoxBorder.Square;
-            //AnsiConsole.Write(endingsPanel);
-            //Thread.Sleep(2500);
-            //Console.Clear();
-            //goto menu;
+            var PanelEnd = new Panel("Endings");
+            PanelEnd.AsciiBorder();
+            //PanelEnd.Header = new PanelHeader();
+            foreach (var item in Lists.endings)
+            {
+                Debug.WriteLine(item);
+                PanelEnd = new Panel(item);
+            }
+            AnsiConsole.Write(PanelEnd);
+            Thread.Sleep(2500);
+            Console.Clear();
+            goto menu;
         } //ENDINGS
         else if (credits == "Updates")
         {

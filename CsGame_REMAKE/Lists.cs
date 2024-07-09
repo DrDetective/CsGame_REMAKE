@@ -18,13 +18,10 @@ namespace CsGame_REMAKE
         #endregion
         #region Other
         public List<string> secret = new List<string>();
-        public List<string> endings = new List<string>();
-        public List<string> codes = new List<string>();
-        public List<string> pockets = new List<string>();
+        public static List<string> endings = new List<string>();
+        public List<string> Foundcodes = new List<string>();
+        public static List<string> pockets = new List<string>();
         #endregion
-
-        //public Dictionary<int, string> Betterpockets = new Dictionary<int, string>();
-        //public static string[] pockets;
         public Lists()
         {
             pyramidItems.Add("Hay");
@@ -38,14 +35,14 @@ namespace CsGame_REMAKE
             desertItems.Add("Glass");
             desertItems.Add("Cloth");
 
-            //secret.Add("ENERGYSWORD");
-            //secret.Add("HL");
-            //secret.Add("FSBERSERK");
-            //secret.Add("ZENITH");
-            //secret.Add("BLOODMOON");
-            //secret.Add("PLEB");
-            //secret.Add("TENSAZANGETSU");
-            //secret.Add("kamonevim");
+            secret.Add("energysword");
+            secret.Add("hl");
+            secret.Add("fsberserk");
+            secret.Add("zenith");
+            secret.Add("bloodmoon");
+            secret.Add("pleb");
+            secret.Add("tensazangetsu");
+            secret.Add("kamonevim");
 
             combatDesert.Add("Snake");
             combatDesert.Add("Scorpion");

@@ -32,6 +32,7 @@ namespace CsGame_REMAKE
             var colorYellow = new Style().Foreground(Color.Yellow);
             int desertItemsIndex = Helper.generator.Next(0, list.desertItems.Count);
             bool OceanChecker = false;
+            bool CodeChecker = false;
             DesertIntro();
             var desert = AnsiConsole.Prompt(new SelectionPrompt<string>().PageSize(3).HighlightStyle(colorYellow).AddChoices(new[] { "Travel through desert", "Search near you for resources", "Inventory" }));
             help.LevelUP(100);
@@ -64,12 +65,12 @@ namespace CsGame_REMAKE
                         //RuinsChecker = true;
                         if (ruins == "Explore")
                         {
-                            if (ruinsRandom > 90)
+                            if (ruinsRandom > 95)
                             {
                                 if (endingCheck == true) { return; } //ENDING CHECK
                                 else
                                 {
-                                    list.endings.Add("Living Hell");
+                                    Lists.endings.Add("Living Hell");
                                     endingCheck = true;
                                     Console.Clear();
                                     Console.WriteLine("You found a mysterious portal\n\rAs you go closer you become more curious to know whats in there");
@@ -84,19 +85,19 @@ namespace CsGame_REMAKE
                                     Console.WriteLine("Secret ending: Living Hell");
                                     Thread.Sleep(1500);
                                     Console.Clear();
-                                    Desert_Start();
+                                    //File.WriteAllText(Player.playerName, "Living Hell");
                                 } //SECRET ENDING
-                            }
-                            else if (ruinsRandom <= 90)
+                            } //5% chance to find secret ending
+                            else if (ruinsRandom <= 95)
                             {
                                 Console.WriteLine($"You found {list.desertItems[desertItemsIndex]}");
-                                //list.pockets.Add(list.desertItems[desertItemsIndex]);
+                                Lists.pockets.Add(list.desertItems[desertItemsIndex]);
                                 Thread.Sleep(1750);
                                 Console.Clear();
                                 Desert_Start();
-                            }
+                            } //95% chance to find resources
                         } //EXPLORE RUINS
-                        else { goto ruinsTravel; } //RETURN TO TRAVEL MORE
+                        else { Console.Clear(); goto ruinsTravel; } //RETURN TO TRAVEL MORE
                     } //Found Ruins
                     else if (randomTravel > 50 && randomTravel <= 70)
                     {
@@ -109,12 +110,12 @@ namespace CsGame_REMAKE
                         if (pyramid == "Explore")
                         {
                             Console.WriteLine($"You found {list.pyramidItems[pyramidIndex]}");
-                            list.pockets.Add(list.pyramidItems[pyramidIndex]);
+                            Lists.pockets.Add(list.pyramidItems[pyramidIndex]);
                             Thread.Sleep(1750);
                             Console.Clear();
                             Desert_Start();
                         } //EXPLORE PYRAMIDS
-                        else { goto ruinsTravel; } //RETURN TO TRAVEL MORE
+                        else { Console.Clear(); goto ruinsTravel; } //RETURN TO TRAVEL MORE
                     } //Found Pyramid
                     else if (randomTravel > 70 && randomTravel <= 95)
                     {
@@ -136,32 +137,34 @@ namespace CsGame_REMAKE
                     Player.hunger -= 5;
                     Player.thirst -= 5;
                     int rng = Helper.generator.Next(0, 100);
-                    //int secretIndex = Helper.generator.Next(0, list.secret.Count);
+                    int secretIndex = Helper.generator.Next(0, list.secret.Count);
                     #endregion
-                    //if (rng <= 20) FIX with better statement
-                    //{
-                    //    if (list.secret.Contains(list.secret[secretIndex])) { return; } //SECRET CODE CHECK
-                    //    else
-                    //    {
-                    //        list.codes.Add(list.secret[secretIndex]);
-                    //        Console.WriteLine($"You found a piece of paper\nIt says: {list.secret[secretIndex]}");
-                    //        Thread.Sleep(1750);
-                    //        Console.Clear();
-                    //        Desert_Start();
-                    //    } //SECRET CODE
-                    //} //Found Secret Code
-                    if (rng >= 0)
+                    if (rng < 10)
+                    {
+                        if (CodeChecker == true) { return; } //SECRET CODE CHECK
+                        else
+                        {
+                            CodeChecker = true;
+                            list.Foundcodes.Add(list.secret[secretIndex]);
+                            Console.WriteLine($"You found a piece of paper\nIt says: {list.secret[secretIndex]}");
+                            Thread.Sleep(1750);
+                            Console.Clear();
+                            list.secret.Remove(list.secret[secretIndex]);
+                            Desert_Start();
+                        } //SECRET CODE
+                    } //Found Secret Code 10%
+                    if (rng >= 10)
                     {
                         Console.WriteLine($"You searched for few hours and found {list.desertItems[desertItemsIndex]}\nRemaining stamina {Player.stamina}/{Player.maxStamina}");
-                        list.pockets.Add(list.desertItems[desertItemsIndex]);
+                        Lists.pockets.Add(list.desertItems[desertItemsIndex]);
                         Thread.Sleep(2000);
                         Console.Clear();
                         Desert_Start();
-                    } //Found resources
+                    } //Found resources 90%
                     break;
 
                 case "Inventory":
-                    help.Inventory(colorYellow, Color.Yellow, list.pockets);
+                    help.Inventory(colorYellow, Color.Yellow);
                     break;
             }
             if (OceanChecker == true) { return; }
@@ -171,43 +174,3 @@ namespace CsGame_REMAKE
 }
 
 //after secret ending make it to start of the game instead of start of desert and maybe save ending in txt file
-//AnsiConsole.Write(new FigletText("Coming soon").Color(Color.Yellow).Centered());
-//Thread.Sleep(1500);
-//Console.Clear();
-//Desert_Start();
-//var tableInv = new Table();
-//tableInv.AddColumn("Name");
-//tableInv.AddColumn($"{Player.playerName}");
-//tableInv.AddColumn("Pockets");
-//tableInv.AddRow("LVL", $"{Player.lvl}");
-//tableInv.AddRow("Progress", $"{Player.progressLvl}");
-//tableInv.AddRow("HP", $"{Player.playerHP}");
-//tableInv.AddRow("MP", $"{Player.mana}");
-//tableInv.AddRow("Hunger", $"{Player.hunger}");
-//tableInv.AddRow("Thirst", $"{Player.thirst}");
-//tableInv.AddRow("Stamina", $"{Player.stamina}");
-//tableInv.AddRow("Armor", $"{Player.armor}");
-//tableInv.AddRow("Damage", $"{Player.playerAttack}");
-//AnsiConsole.Write(tableInv);
-//var inventory = AnsiConsole.Prompt(new SelectionPrompt<string>().PageSize(3).HighlightStyle(colorInv).AddChoices(new[] { "Crafting", "Cooking", "Go back" }));
-//if (inventory == "Crafting")
-//{
-
-//} //CRAFTING
-//else if (inventory == "Cooking")
-//{
-
-//} //COOKING
-//else
-//{
-//    if (ocean == "Inventory")
-//    {
-//        Console.Clear();
-//        goto oceanTravel;
-//    }
-//    else
-//    {
-//        Console.Clear();
-//        goto travel;
-//    }
-//}

@@ -67,7 +67,7 @@ namespace CsGame_REMAKE
                         break;
                     case "Run":
                         if (Run <= 30) { Console.WriteLine("You ran away"); }
-                        else { goto combat; }
+                        else { Console.Clear(); goto combat; }
                         break;
                 } //PLAYER TURN
                 if (Player.enemyHP > 0)
@@ -82,6 +82,7 @@ namespace CsGame_REMAKE
             {
                 Player.progressLvl += Run;
                 Console.WriteLine($"You won against {type[combatIndex]} and found {Items[ItemsIndex]}");
+                Lists.pockets.Add(Items[ItemsIndex]);
                 Thread.Sleep(1500);
                 Console.Clear();
             } //W
@@ -93,26 +94,17 @@ namespace CsGame_REMAKE
                 return;
             } //L
         }
-        public void Inventory(Style color, Color borderColor, List<string> items)
+        public void Inventory(Style color, Color borderColor)
         {
             //var colorInv = new Style().Foreground(Color.White);
             #region Table Info
+            int i = 0;
             var tableInv = new Table();
-            Lists list = new Lists();
             tableInv.BorderColor(borderColor);
             tableInv.Border(TableBorder.AsciiDoubleHead);
             tableInv.AddColumn($"{Player.playerName}");
             tableInv.AddColumn("");
             tableInv.AddColumn("Pockets");
-            foreach (var item in items)
-            {
-                foreach (var multiItem in item.GroupBy(x => x).Where(g => g.Count() > 1).Select(g => new { Value = g.Key, Count = g.Count() }))
-                    //Debug.WriteLine($"{multiItem.Value} x {multiItem.Count}");
-                    tableInv.AddRow($"{multiItem.Count}x {multiItem.Value}");
-                tableInv.AddRow($"1x {item}");
-                Debug.WriteLine(item);
-            }
-
             tableInv.AddRow("LVL", $"{Player.lvl}");
             tableInv.AddRow("Progress", $"{Player.progressLvl}/{Player.LVLRequirment}");
             tableInv.AddRow("HP", $"{Player.playerHP}");
@@ -122,13 +114,16 @@ namespace CsGame_REMAKE
             tableInv.AddRow("Stamina", $"{Player.stamina}");
             tableInv.AddRow("Armor", $"{Player.armor}");
             tableInv.AddRow("Damage", $"{Player.playerAttack}");
+            foreach (var multiItem in Lists.pockets.GroupBy(x => x).Where(g => g.Count() >= 1).Select(g => new { Value = g.Key, Count = g.Count() }))
+            {
+                Debug.WriteLine($"{multiItem.Count}x {multiItem.Value}");
+                tableInv.UpdateCell(i, 2, $"{multiItem.Count}x {multiItem.Value}");
+                i++;
+            }
+            //foreach (var item in Lists.pockets) { Debug.WriteLine($"{item}"); }
             AnsiConsole.Write(tableInv);
             #endregion
             var inventory = AnsiConsole.Prompt(new SelectionPrompt<string>().PageSize(3).HighlightStyle(color).AddChoices(new[] { "Crafting", "Cooking", "Go back" }));
-            foreach (var item in items)
-            {
-                Console.WriteLine(item);
-            }
             switch (inventory)
             {
                 case "Crafting":
@@ -143,5 +138,3 @@ namespace CsGame_REMAKE
         }
     }
 }
-
-//make like 1x leather 4x meat etc extract from list "pockets"
