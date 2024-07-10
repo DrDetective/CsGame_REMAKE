@@ -222,6 +222,8 @@ namespace CsGame_REMAKE
                         break;
 
                     case "livinghell":
+                        Console.WriteLine("You unlocked short for ending Living hell\n(Find the ending again to play it)");
+                        Livinghell.OpenHell = true;
                         break;
                 }
                 ShowSecretItem(ItemName, ItemDes, ItemDamage, ItemCritDamage, ItemCritChance);

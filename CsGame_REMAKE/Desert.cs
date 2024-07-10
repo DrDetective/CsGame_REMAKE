@@ -29,6 +29,7 @@ namespace CsGame_REMAKE
         {
             Lists list = new Lists();
             Helper help = new Helper();
+            Livinghell hell = new Livinghell();
             var colorYellow = new Style().Foreground(Color.Yellow);
             int desertItemsIndex = Helper.generator.Next(0, list.desertItems.Count);
             bool OceanChecker = false;
@@ -70,6 +71,7 @@ namespace CsGame_REMAKE
                                 if (endingCheck == true) { return; } //ENDING CHECK
                                 else
                                 {
+                                    if (Livinghell.OpenHell == true) { hell.LivingHellShortStory(); }
                                     Lists.endings.Add("Living Hell");
                                     endingCheck = true;
                                     Console.Clear();
