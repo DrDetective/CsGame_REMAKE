@@ -18,15 +18,19 @@ namespace CsGame_REMAKE
 
         private void DesertIntro()
         {
-            if (!intro) { return; }
-            AnsiConsole.Write(new FigletText("Desert").Color(Color.Yellow).Centered());
-            Thread.Sleep(1700);
-            Console.Clear();
-            intro = true;
+            if (intro) { return; }
+            else
+            {
+                AnsiConsole.Write(new FigletText("Desert").Color(Color.Yellow).Centered());
+                Thread.Sleep(1700);
+                Console.Clear();
+                intro = true;
+            }
         }
 
         public void Desert_Start()
         {
+            #region Variables
             Lists list = new Lists();
             Helper help = new Helper();
             Livinghell hell = new Livinghell();
@@ -34,10 +38,14 @@ namespace CsGame_REMAKE
             int desertItemsIndex = Helper.generator.Next(0, list.desertItems.Count);
             bool OceanChecker = false;
             bool CodeChecker = false;
+            #endregion
             DesertIntro();
-            var desert = AnsiConsole.Prompt(new SelectionPrompt<string>().PageSize(3).HighlightStyle(colorYellow).AddChoices(new[] { "Travel through desert", "Search near you for resources", "Inventory" }));
             help.LevelUP(100);
             help.OutOfStamina(50);
+            help.Hunger();
+            help.Thirsty();
+            help.GameOver();
+            var desert = AnsiConsole.Prompt(new SelectionPrompt<string>().PageSize(3).HighlightStyle(colorYellow).AddChoices(new[] { "Travel through desert", "Search near you for resources", "Inventory" }));
 
             switch (desert)
             {
@@ -72,21 +80,25 @@ namespace CsGame_REMAKE
                                 else
                                 {
                                     if (Livinghell.OpenHell == true) { hell.LivingHellShortStory(); }
-                                    Lists.endings.Add("Living Hell");
-                                    endingCheck = true;
-                                    Console.Clear();
-                                    Console.WriteLine("You found a mysterious portal\n\rAs you go closer you become more curious to know whats in there");
-                                    Thread.Sleep(2250);
-                                    Console.Clear();
-                                    Console.WriteLine("But the closer you got the more hotter you were as if there was a Sun in front of you\n\rOut of nowhere you tripped over something and looked what it was");
-                                    Thread.Sleep(2500);
-                                    Console.Clear();
-                                    Console.WriteLine("It was Super Shotgun and you felt getting angrier\n\rYou looked through the portal and saw demons and you steped in");
-                                    Thread.Sleep(2200);
-                                    Console.Clear();
-                                    Console.WriteLine("Secret ending: Living Hell");
-                                    Thread.Sleep(1500);
-                                    Console.Clear();
+                                    else
+                                    {
+                                        Lists.endings.Add("Living Hell");
+                                        endingCheck = true;
+                                        Console.Clear();
+                                        Console.WriteLine("You found a mysterious portal\n\rAs you go closer you become more curious to know whats in there");
+                                        Thread.Sleep(2250);
+                                        Console.Clear();
+                                        Console.WriteLine("But the closer you got the more hotter you were as if there was a Sun in front of you\n\rOut of nowhere you tripped over something and looked what it was");
+                                        Thread.Sleep(2500);
+                                        Console.Clear();
+                                        Console.WriteLine("It was Super Shotgun and you felt getting angrier\n\rYou looked through the portal and saw demons and you steped in");
+                                        Thread.Sleep(2200);
+                                        Console.Clear();
+                                        Console.WriteLine("Secret ending: Living Hell");
+                                        Thread.Sleep(1500);
+                                        Console.Clear();
+                                    }
+
                                 } //SECRET ENDING
                             } //5% chance to find secret ending
                             else if (ruinsRandom <= 95)
@@ -120,7 +132,7 @@ namespace CsGame_REMAKE
                     } //Found Pyramid
                     else if (randomTravel > 70 && randomTravel <= 95)
                     {
-                        help.Combat(combatRng, list.combatDesert, colorYellow, list.desertItems, desertItemsIndex, 20, 3, Player.EnemyHPBooster, Player.EnemyDamageBooster);
+                        help.BasicCombat(combatRng, list.combatDesert, colorYellow, list.desertItems, desertItemsIndex, 20, 3, Player.EnemyHPBooster, Player.EnemyDamageBooster);
                     } //Combat
                     else if (randomTravel > 95 && randomTravel <= 100 || Lists.pockets.Count() == 10)
                     {

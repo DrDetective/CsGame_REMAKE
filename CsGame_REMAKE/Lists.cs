@@ -20,7 +20,8 @@ namespace CsGame_REMAKE
         public static List<string> secret = new List<string>();
         public static List<string> endings = new List<string>();
         public List<string> Foundcodes = new List<string>();
-        public static List<string> pockets = new List<string>();
+        public static List<string> pockets = new List<string>(20);
+        public static List<string> backpack = new List<string>(20);
         #endregion
         public Lists()
         {
@@ -31,13 +32,12 @@ namespace CsGame_REMAKE
 
             desertItems.Add("Rocks");
             desertItems.Add("Rope");
-            desertItems.Add("Small chunks of wood");
+            desertItems.Add("Wooden sticks");
             desertItems.Add("Glass");
             desertItems.Add("Cloth");
 
-            secret.Add("energysword");
             secret.Add("hl");
-            secret.Add("fsberserk");
+            secret.Add("fullsetberserk");
             secret.Add("zenith");
             secret.Add("bloodmoon");
             secret.Add("noob");

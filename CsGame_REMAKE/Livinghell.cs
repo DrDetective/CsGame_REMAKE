@@ -11,7 +11,7 @@ namespace CsGame_REMAKE
         public static bool OpenHell;
         public void LivingHellShortStory() //continue short story as a doom guy then return to start maybe
         {
-        
+
         }
     }
 }

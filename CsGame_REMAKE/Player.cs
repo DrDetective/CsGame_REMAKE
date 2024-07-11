@@ -29,6 +29,8 @@ namespace CsGame_REMAKE
         public static int DamageBooster;
         public static int CriticalDamage;
         public static int CriticalChance;
+        public static bool hasBackpack = false;
+        public static bool hasDied = false;
         #endregion
         #region Enemy
         public static int enemyHP = 20;
@@ -39,5 +41,6 @@ namespace CsGame_REMAKE
         public static int EnemyDamageBooster = 0;
         #endregion
         public static bool noobDiff = false;
+        public static bool hardDiff = false;
     }
 }

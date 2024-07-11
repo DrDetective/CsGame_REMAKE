@@ -23,19 +23,23 @@ menu:
         switch (credits)
         {
             case "Endings":
-                var tableEnd = new Table();
-                tableEnd.AddColumns("Endings");
-                tableEnd.AsciiDoubleHeadBorder();
-                tableEnd.Columns[0].Centered();
-                foreach (var item in Lists.endings)
+                if (Lists.endings.Count() == 0) { Console.WriteLine("You haven't unlocked any endings"); Console.Clear(); goto menu; }
+                else
                 {
-                    Debug.WriteLine(item);
-                    tableEnd.AddRow(item);
+                    var tableEnd = new Table();
+                    tableEnd.AddColumns("Endings");
+                    tableEnd.AsciiDoubleHeadBorder();
+                    tableEnd.Columns[0].Centered();
+                    foreach (var item in Lists.endings)
+                    {
+                        Debug.WriteLine(item);
+                        tableEnd.AddRow(item);
+                    }
+                    AnsiConsole.Write(tableEnd);
+                    Thread.Sleep(2500);
+                    Console.Clear();
+                    goto menu;
                 }
-                AnsiConsole.Write(tableEnd);
-                Thread.Sleep(2500);
-                Console.Clear();
-                goto menu;
 
             case "Updates":
                 var psi = new ProcessStartInfo
@@ -73,6 +77,7 @@ menu:
     else { return; } //EXIT
 } //START MENU
 #region Starting Info
+if (Player.hasDied) { help.Restart(); }
 Console.WriteLine("Enter your name wanderer");
 Player.playerName += Console.ReadLine();
 Console.Clear();
@@ -86,13 +91,6 @@ Console.Clear();
 
 help.TestPlayer();
 desert.Desert_Start();
-
-
-
-
-
-
-
 
 
 
@@ -192,11 +190,11 @@ desert.Desert_Start();
 
 
 
-//endings
+//plan out endings
 
 //ADD RANDOM CHANCE OF ENCOUNTER? KRAKEN
 //ADD LVL FUNCTION TO ENEMY AND PLAYER (RANDOM LVL ENEMY) ??????????
 //ADD COOKING
 //ADD CRAFTING
-//ITEM DESIGN EITHER WITH PANEL OR TABLE
+
 //https://www.geeksforgeeks.org/console-setwindowsize-method-in-c-sharp/
